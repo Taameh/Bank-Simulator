@@ -1,10 +1,12 @@
 package Exceptions;
 
-@SuppressWarnings("serial")
-public class InvalidKeyException extends Exception {
-	
-	public InvalidKeyException(String msj) {
-		super(msj);
-	}
+public class InvalidKeyException extends Exception{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	public InvalidKeyException(String msg){
+		super(msg);
+	}
 }
