@@ -6,13 +6,13 @@ import Exceptions.BoundaryViolationException;
 import Exceptions.EmptyListException;
 import Exceptions.InvalidPositionException;
 
-public class DoublyLinkedList<E> implements PositionList<E> {
+public class ListaDoblementeEnlazada<E> implements PositionList<E> {
 
 	protected DNodo<E> trailer;
 	protected DNodo<E> header;
 	protected int tamanio;
 	
-	public DoublyLinkedList() {
+	public ListaDoblementeEnlazada() {
 		header = new DNodo<E>(null);
 		trailer = new DNodo<E>(null);
 		header.setSig(trailer);
@@ -22,6 +22,7 @@ public class DoublyLinkedList<E> implements PositionList<E> {
 		tamanio = 0;
 	}
 	
+	@Override
 	public int size() {
 		
 		return tamanio;
@@ -190,19 +191,20 @@ public class DoublyLinkedList<E> implements PositionList<E> {
 		
 		return aux;
 	}
-
+	
+	@Override
 	public Iterator<E> iterator() {
 		
 		// Creo un elementIteratorsobre la lista this a iterar;
-			return new ElementIterator<>(this);
+			return new ElementIterator<E>(this);
 		}
 
-		/*Retorna un objeto Iterable conteniendo las posiciones asociadas a
-		los elementos almacenados en la ED*/
 
+	
+	@Override
 	public Iterable<Position<E>> positions() {
 			
-		PositionList<Position<E>> p = new DoublyLinkedList<>();
+		PositionList<Position<E>> p = new ListaDoblementeEnlazada<>();
 		if (!isEmpty()) {
 				
 			Position<E> pos = header.getSig();

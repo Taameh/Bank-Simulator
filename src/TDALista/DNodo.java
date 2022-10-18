@@ -2,48 +2,48 @@ package TDALista;
 
 public class DNodo<E> implements Position<E> {
 
-	protected E elemento;
-	protected DNodo<E> ant;
-	protected DNodo<E> sig;
+	protected E element;
+	protected DNodo<E> prev;
+	protected DNodo<E> next;
 	
 	
 	public E element() {
-		return elemento;
+		return element;
 	}
 	
-	public DNodo(E item,DNodo<E> siguiente,DNodo<E> anterior) {
-		elemento = item;
-		this.sig = siguiente;
-		this.ant = anterior;
+	public DNodo(E item,DNodo<E> n,DNodo<E> p) {
+		element = item;
+		this.next = n;
+		this.prev =p;
 	}
 	
 	DNodo(E element) {
 		this(element,null,null);
 	}
 
-	public DNodo<E> getAnt() {
-		return ant;
+	public DNodo<E> getPrev() {
+		return prev;
 	}
 
-	public void setAnt(DNodo<E> ant) {
-		this.ant = ant;
+	public void setPrev(DNodo<E> ant) {
+		this.prev = ant;
 	}
 
-	public DNodo<E> getSig() {
-		return sig;
+	public DNodo<E> getNext() {
+		return next;
 	}
 
-	public void setSig(DNodo<E> sig) {
-		this.sig = sig;
+	public void setNext(DNodo<E> sig) {
+		this.next = sig;
 	}
 
 	@Override
 	public String toString() {
-		return "DNodo [elemento=" + elemento + ", ant=" + ant + ", sig=" + sig + "]";
+		return "DNodo [elemento=" + element + ", ant=" + prev + ", sig=" + next + "]";
 	}
 
-	public void setElemento(E element) {
-		elemento = element;
+	public void setElement(E element) {
+		element = element;
 		// TODO Auto-generated method stub
 		
 	}

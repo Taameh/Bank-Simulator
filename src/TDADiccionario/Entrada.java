@@ -2,35 +2,35 @@ package TDADiccionario;
 
 public class Entrada<K,V> implements Entry<K,V> {
 	
-	private K clave;
-	private V valor;
+	private K key;
+	private V value;
 	
-	public Entrada(K clave,V valor) {
-		this.clave = clave;
-		this.valor = valor;
+	public Entrada(K k,V v ) {
+		this.key = k;
+		this.value = v;
 	}
 
 	@Override
 	public K getKey() {
-		return clave;
+		return key;
 	}
 
 	@Override
 	public V getValue() {
-		return valor;
+		return value;
 	}
 
-	public void setClave(K clave) {
-		this.clave = clave;
+	public void setClave(K ck) {
+		this.key = k;
 	}
 
-	public void setValor(V valor) {
-		this.valor = valor;
+	public void setValor(V v) {
+		this.value = v;
 	}
 
 	@Override
 	public String toString() {
-		return "Entrada [clave=" + clave + ", valor=" + valor + "]";
+		return "Entrada [clave=" + key + ", valor=" + value + "]";
 	}
 	
 	

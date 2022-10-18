@@ -3,7 +3,7 @@ package TDAPila;
 import Exceptions.EmptyStackException;
 
 
-public class LinkedStack <E> implements Stack{
+public class PilaEnlazada <E> implements Stack{
 	private Nodo<E> top;
 	private int size = 0;
 	

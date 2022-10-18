@@ -5,7 +5,7 @@ import java.util.Comparator;
 import Exceptions.EmptyPriorityQueueException;
 import Exceptions.InvalidKeyException;
 
-public class ColaCP_con_heap<K extends Comparable<K>,V> implements PriorityQueue<K,V> {
+public class ColaCPHeap<K extends Comparable<K>,V> implements PriorityQueue<K,V> {
 	protected Entry<K,V>[] queue;
 	protected int size;
 	protected Comparator<K> comparator;
@@ -33,7 +33,7 @@ public class ColaCP_con_heap<K extends Comparable<K>,V> implements PriorityQueue
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ColaCP_con_heap() {
+	public ColaCPHeap() {
 		queue = (Entrada<K,V>[]) new Entrada[12];
 		size = 0;
 		comparator = new Default_Comparator<K>();

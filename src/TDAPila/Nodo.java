@@ -15,7 +15,7 @@ public class Nodo <E>{
 	public void setElement(E e) {
 		element = e;
 	}
-	public void setSiguiente(Nodo<E> n) {
+	public void setNext(Nodo<E> n) {
 		next = n;
 	}
 	

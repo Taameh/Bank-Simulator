@@ -9,7 +9,7 @@ import TDALista.*;
 
 public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 	
-	protected PositionList<Entrada<K,V>> [] arregloBuckets;
+	protected PositionList<Entrada<K,V>> [] buckets;
 	protected int n; //CANTIDAD DE ENTRADAS
 	protected int N; //TAMANIO DEL ARREGLO
 	protected static final float factor = 0.5f;
@@ -17,14 +17,13 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 	@SuppressWarnings("unchecked")
 	public DiccionarioHashAbierto() {
 		N = 11;
-		arregloBuckets = (PositionList<Entrada<K,V>> []) new DoublyLinkedList[N];
+		buckets = (PositionList<Entrada<K,V>> []) new ListaDoblementeEnlazada[N];
 		for (int i = 0;i < N;i++)
-			arregloBuckets[i] = new DoublyLinkedList<Entrada<K,V>>();
+			buckets[i] = new ListaDoblementeEnlazada<Entrada<K,V>>();
 		n = 0;
 	}
 
-	@Override
-	public int size() {
+	@Override	public int size() {
 		
 		return n;
 	}
@@ -53,7 +52,7 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 		
 		Entry<K, V> ret = null;
 		int clave = hashThisKey(key);
-		Iterator<Entrada<K, V>> it = arregloBuckets[clave].iterator();
+		Iterator<Entrada<K, V>> it = buckets[clave].iterator();
 		boolean esta = false;
 
 		Entrada<K, V> act = it.hasNext() ? it.next() : null;
@@ -72,11 +71,11 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 	public Iterable<Entry<K, V>> findAll(K key) throws InvalidKeyException {
 		
 		if (key == null)
-			throw new InvalidKeyException("Key Invalida");
+			throw new InvalidKeyException("La key recibida es nula");
 		
-		PositionList<Entry<K,V>> l = new DoublyLinkedList<Entry<K,V>>();
+		PositionList<Entry<K,V>> l = new ListaDoblementeEnlazada<Entry<K,V>>();
 		
-		for (Entrada<K, V> s : arregloBuckets[hashThisKey(key)]) {
+		for (Entrada<K, V> s : buckets[hashThisKey(key)]) {
 			if (s.getKey().equals(key)) {
 				l.addLast(s);
 			}
@@ -90,31 +89,31 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 		if (n / N >= factor)
 			rehash();
 		
-		PositionList<Entrada<K,V>> l = arregloBuckets[hashThisKey(key)];
-		Entrada<K,V> nueva = new Entrada<K,V>(key,value);
-		arregloBuckets[hashThisKey(key)].addLast(nueva);
+		PositionList<Entrada<K,V>> l = buckets[hashThisKey(key)];
+		Entrada<K,V> newEntry = new Entrada<K,V>(key,value);
+		buckets[hashThisKey(key)].addLast(newEntry);
 		n++;
 		
-		return nueva;
+		return newEntry;
 	}
 
 	@Override
 	public Entry<K, V> remove(Entry<K, V> e) throws InvalidEntryException {
 		
 		if (e == null)
-			throw new InvalidEntryException("ENTRADA NULA");
+			throw new InvalidEntryException("La entrada recibida es nula.");
 		
-		Entry<K, V> salida = null;
+		Entry<K, V> toReturn = null;
 		
 		try {
-				PositionList<Entrada<K, V>> l = arregloBuckets[hashThisKey(e.getKey())];
+				PositionList<Entrada<K, V>> l = buckets[hashThisKey(e.getKey())];
 				Position<Entrada<K, V>> cursor = null;
 				Iterator<Position<Entrada<K, V>>> it = l.positions().iterator();
 		
-				while (it.hasNext() && salida == null) {
+				while (it.hasNext() && toReturn == null) {
 					cursor = it.next();
 					if (cursor.element().equals(e)) {
-						salida = cursor.element();
+						toReturn = cursor.element();
 							l.remove(cursor);
 							n--;
 						}
@@ -125,32 +124,32 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 		
 		
 		
-		if (salida == null)
+		if (toReturn == null)
 			throw new InvalidEntryException("La entrada no se encuentra en el diccionario");
 
-		return salida;
+		return toReturn;
 	}
 
 	@Override
 	public Iterable<Entry<K, V>> entries() {
-		PositionList<Entry<K, V>> lista = new DoublyLinkedList<Entry<K, V>>();
+		PositionList<Entry<K, V>> it = new ListaDoblementeEnlazada<Entry<K, V>>();
 		for (int i = 0; i < N; i++) {
-			for (Entry<K, V> en : arregloBuckets[i]) {
-				lista.addLast(en);
+			for (Entry<K, V> en : buckets[i]) {
+				it.addLast(en);
 			}
 		}
-		return lista;
+		return it;
 	}
 	
 	@SuppressWarnings("unchecked")
 	private void rehash() {
-		Iterable<Entry<K, V>> entradas = entries();
-		N = proximo_primo(N * 2);
-		arregloBuckets = (PositionList<Entrada<K, V>>[]) new DoublyLinkedList[N];
+		Iterable<Entry<K, V>> entries = entries();
+		N = sigPrimo(N * 2);
+		buckets = (PositionList<Entrada<K, V>>[]) new ListaDoblementeEnlazada[N];
 		n = 0;
 		for (int i = 0; i < N; i++)
-			arregloBuckets[i] = new DoublyLinkedList<Entrada<K, V>>();
-		for (Entry<K, V> e : entradas)
+			buckets[i] = new ListaDoblementeEnlazada<Entrada<K, V>>();
+		for (Entry<K, V> e : entries)
 			try {
 				insert(e.getKey(), e.getValue());
 			} catch (InvalidKeyException ex) {
@@ -159,7 +158,7 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 
 	}
 
-	private int proximo_primo(int n) {
+	private int sigPrimo(int n) {
 		boolean es = false;
 		n++;
 		while (!es) {
