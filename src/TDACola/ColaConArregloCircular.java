@@ -8,7 +8,6 @@ public class ColaConArregloCircular <E> implements Queue<E>{
 	private int tail;
 	private E[] queue;
 
-	@Override
 	public ColaConArregloCircular() {
 		head = 0;
 		tail = 0;
