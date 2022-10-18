@@ -80,9 +80,6 @@ public class ColaConArregloCircular <E> implements Queue<E>{
 		}catch(EmptyQueueException e){
 			System.out.println(e.getMessage());
 		}
-		System.out.println();
-		for (int i = 0; i < newQueue.length; i++)
-			System.out.print(newQueue[i] + " ");
 
 	}
 	
