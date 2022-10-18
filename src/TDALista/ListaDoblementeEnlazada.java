@@ -15,10 +15,10 @@ public class ListaDoblementeEnlazada<E> implements PositionList<E> {
 	public ListaDoblementeEnlazada() {
 		header = new DNodo<E>(null);
 		trailer = new DNodo<E>(null);
-		header.setSig(trailer);
-		header.setAnt(null);
-		trailer.setAnt(header);
-		trailer.setSig(null);
+		header.setNext(trailer);
+		header.setPrev(null);
+		trailer.setPrev(header);
+		trailer.setNext(null);
 		tamanio = 0;
 	}
 	
@@ -103,17 +103,17 @@ public class ListaDoblementeEnlazada<E> implements PositionList<E> {
 		DNodo<E> nuevo = new DNodo<E>(element,null,null);
 		
 		if (tamanio == 0) {
-			header.getSig().setAnt(nuevo);
-			nuevo.setSig(header.getSig());
-			nuevo.setAnt(header);
-			header.setSig(nuevo);
-			trailer.setAnt(nuevo);
+			header.getSig().setPrev(nuevo);
+			nuevo.setNext(header.getSig());
+			nuevo.setPrev(header);
+			header.setNext(nuevo);
+			trailer.setPrev(nuevo);
 		}
 		else {
-			header.getSig().setAnt(nuevo);
-			nuevo.setSig(header.getSig());
-			nuevo.setAnt(header);
-			header.setSig(nuevo);
+			header.getSig().setPrev(nuevo);
+			nuevo.setNext(header.getSig());
+			nuevo.setPrev(header);
+			header.setNext(nuevo);
 		}
 		
 		tamanio++;
@@ -125,8 +125,8 @@ public class ListaDoblementeEnlazada<E> implements PositionList<E> {
 		
 		
 		DNodo<E> nuevo = new DNodo<E>(element,trailer,trailer.getAnt());
-		trailer.getAnt().setSig(nuevo);
-		trailer.setAnt(nuevo);
+		trailer.getAnt().setNext(nuevo);
+		trailer.setPrev(nuevo);
 		tamanio++;
 		
 	}
@@ -136,10 +136,10 @@ public class ListaDoblementeEnlazada<E> implements PositionList<E> {
 		
 		DNodo<E> pos = checkPosition(p);
 		DNodo<E> nuevo = new DNodo<E>(element);
-		nuevo.setSig(pos.getSig());
-		nuevo.setAnt(pos);
-		nuevo.getSig().setAnt(nuevo);
-		pos.setSig(nuevo);
+		nuevo.setNext(pos.getSig());
+		nuevo.setPrev(pos);
+		nuevo.getSig().setPrev(nuevo);
+		pos.setNext(nuevo);
 		tamanio++;
 		
 	}
@@ -172,13 +172,13 @@ public class ListaDoblementeEnlazada<E> implements PositionList<E> {
 		tamanio--;
 		DNodo<E> vPrev = v.getAnt();
 		DNodo<E> vNext = v.getSig();
-		vPrev.setSig(vNext);
-		vNext.setAnt(vPrev);
+		vPrev.setNext(vNext);
+		vNext.setPrev(vPrev);
 		E vElem = v.element();
 		// Desliga la posicion de la lista y la hace invalida
-		v.setSig(null);
-		v.setAnt(null);
-		v.setElemento(null);
+		v.setNext(null);
+		v.setPrev(null);
+		v.setElement(null);
 		return vElem;
 	}
 
@@ -187,7 +187,7 @@ public class ListaDoblementeEnlazada<E> implements PositionList<E> {
 		
 		DNodo<E> n = checkPosition(p);
 		E aux = n.element();
-		n.setElemento(element);
+		n.setElement(element);
 		
 		return aux;
 	}
