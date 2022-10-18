@@ -20,7 +20,7 @@ public class Entrada<K,V> implements Entry<K,V> {
 		return value;
 	}
 
-	public void setClave(K ck) {
+	public void setClave(K k) {
 		this.key = k;
 	}
 
