@@ -40,7 +40,7 @@ public class ListaDoblementeEnlazada<E> implements PositionList<E> {
 		if (isEmpty())
 			throw new EmptyListException("LISTA VACIA");
 		
-		return header.getSig();
+		return header.getNext();
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class ListaDoblementeEnlazada<E> implements PositionList<E> {
 		if (isEmpty())
 			throw new EmptyListException("LISTA VACIA");
 		
-		return trailer.getAnt();
+		return trailer.getPrev();
 	}
 
 	@Override
@@ -56,10 +56,10 @@ public class ListaDoblementeEnlazada<E> implements PositionList<E> {
 		
 		DNodo<E> n = checkPosition(p);
 		
-		if (n == trailer.getAnt())
+		if (n == trailer.getPrev())
 			throw new BoundaryViolationException("Next: Suiguiente de ultimo");
 		
-		return n.getSig();
+		return n.getNext();
 	}
 	
 	private DNodo<E> checkPosition(Position<E> p) throws InvalidPositionException{
@@ -89,7 +89,7 @@ public class ListaDoblementeEnlazada<E> implements PositionList<E> {
 	@Override
 	public Position<E> prev(Position<E> p) throws InvalidPositionException, BoundaryViolationException {
 		DNodo<E> n = checkPosition(p);
-		DNodo<E> prev = n.getAnt();
+		DNodo<E> prev = n.getPrev();
 		
 		if (prev == header)
 			throw new BoundaryViolationException("NO HAY UN ANTERIOR PARA LA PRIMERA POSICION");
@@ -103,15 +103,15 @@ public class ListaDoblementeEnlazada<E> implements PositionList<E> {
 		DNodo<E> nuevo = new DNodo<E>(element,null,null);
 		
 		if (tamanio == 0) {
-			header.getSig().setPrev(nuevo);
-			nuevo.setNext(header.getSig());
+			header.getNext().setPrev(nuevo);
+			nuevo.setNext(header.getNext());
 			nuevo.setPrev(header);
 			header.setNext(nuevo);
 			trailer.setPrev(nuevo);
 		}
 		else {
-			header.getSig().setPrev(nuevo);
-			nuevo.setNext(header.getSig());
+			header.getNext().setPrev(nuevo);
+			nuevo.setNext(header.getNext());
 			nuevo.setPrev(header);
 			header.setNext(nuevo);
 		}
@@ -124,8 +124,8 @@ public class ListaDoblementeEnlazada<E> implements PositionList<E> {
 	public void addLast(E element) {
 		
 		
-		DNodo<E> nuevo = new DNodo<E>(element,trailer,trailer.getAnt());
-		trailer.getAnt().setNext(nuevo);
+		DNodo<E> nuevo = new DNodo<E>(element,trailer,trailer.getPrev());
+		trailer.getPrev().setNext(nuevo);
 		trailer.setPrev(nuevo);
 		tamanio++;
 		
@@ -136,9 +136,9 @@ public class ListaDoblementeEnlazada<E> implements PositionList<E> {
 		
 		DNodo<E> pos = checkPosition(p);
 		DNodo<E> nuevo = new DNodo<E>(element);
-		nuevo.setNext(pos.getSig());
+		nuevo.setNext(pos.getNext());
 		nuevo.setPrev(pos);
-		nuevo.getSig().setPrev(nuevo);
+		nuevo.getNext().setPrev(nuevo);
 		pos.setNext(nuevo);
 		tamanio++;
 		
@@ -170,8 +170,8 @@ public class ListaDoblementeEnlazada<E> implements PositionList<E> {
 			throw new InvalidPositionException("LISTA VACIA");
 		
 		tamanio--;
-		DNodo<E> vPrev = v.getAnt();
-		DNodo<E> vNext = v.getSig();
+		DNodo<E> vPrev = v.getPrev();
+		DNodo<E> vNext = v.getNext();
 		vPrev.setNext(vNext);
 		vNext.setPrev(vPrev);
 		E vElem = v.element();
@@ -207,7 +207,7 @@ public class ListaDoblementeEnlazada<E> implements PositionList<E> {
 		PositionList<Position<E>> p = new ListaDoblementeEnlazada<>();
 		if (!isEmpty()) {
 				
-			Position<E> pos = header.getSig();
+			Position<E> pos = header.getNext();
 				
 			try {
 				while (pos != last()) {
