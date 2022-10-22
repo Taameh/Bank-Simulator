@@ -1,6 +1,11 @@
 package Programa;
 
+import TDALista.ListaDoblementeEnlazada;
 import TDALista.PositionList;
+import Exceptions.EmptyQueueException;
+import Exceptions.EmptyStackException;
+import TDACola.*;
+import TDAPila.*;
 
 public class CuentaBancaria {
 	
@@ -14,12 +19,12 @@ public class CuentaBancaria {
 	
 	// CONSTRUCTOR
 	
-	public CuentaBancaria(String n,String a,int d,int s,PositionList<Transaccion> e) {
+	public CuentaBancaria(String n,String a,int d,int s) {
 		nombre = n;
 		apellido = a;
 		DNI = d;
 		saldo = s;
-		historial = e;
+		historial = new ListaDoblementeEnlazada<Transaccion>();
 	}
 
 	public String getNombre() {
@@ -58,6 +63,72 @@ public class CuentaBancaria {
 		return historial;	
 	}
 	
+	//formato: AxA’A’
 	
+	public static void insertarCadenaCola(String s,Queue<Character> cola) {
+		for (int i = 0; i < s.length(); i++) {
+			cola.enqueue(s.charAt(i));
+		}
+	}
+	
+	public static void insertarCadenaPila(String s,Stack<Character> cola) {
+		for (int i = 0; i < s.length(); i++) {
+			cola.push(s.charAt(i));
+		}
+	}
+	
+	
+	//SE ASUME QUE EL APELLIDO NO LLEVA X
+	
+	public boolean validarCadena(String cadena) {
+		
+		
+		boolean valido = true;
+		
+		Queue<Character> col = new ColaConArregloCircular<Character>();
+		insertarCadenaCola(cadena,col);
+		
+		Stack<Character> s = new PilaEnlazada<Character>();
+		Stack<Character> s2 = new PilaEnlazada<Character>();
+		Queue<Character> c2 = new ColaConArregloCircular<Character>();
+		
+		insertarCadenaPila(getApellido(),s);
+		insertarCadenaPila(getApellido(),s2);
+		insertarCadenaCola(getApellido(),c2);
+		
+		try {
+		
+			while (col.front() != 'x' && valido && !col.isEmpty()) {
+				Character aux = col.dequeue();
+				if (aux != c2.dequeue())
+					valido = false;
+			}
+			
+			if (col.front() == 'x')
+				col.dequeue();
+			else
+				valido = false;
+			
+			
+			while (!col.isEmpty() && !s.isEmpty() && valido) {
+				if (s.pop() != col.dequeue())
+					valido = false;
+			}
+			
+			while (!col.isEmpty() && !s2.isEmpty() & valido) {
+				if (s2.pop() != col.dequeue()) {
+					valido = false;
+				}
+			}
+				
+		}catch(EmptyQueueException e) {
+			e.printStackTrace();
+		} catch (EmptyStackException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return valido;
+	}
 	
 }
