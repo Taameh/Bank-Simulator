@@ -1,9 +1,13 @@
 package Programa;
 
 import TDALista.ListaDoblementeEnlazada;
+import TDALista.Position;
 import TDALista.PositionList;
+import java.util.Iterator;
+
 import Exceptions.EmptyQueueException;
 import Exceptions.EmptyStackException;
+import Exceptions.SaldoInsuficienteException;
 import TDACola.*;
 import TDAPila.*;
 
@@ -129,6 +133,43 @@ public class CuentaBancaria {
 		}
 		
 		return valido;
+	}
+	
+	public PositionList<Transaccion> ultimasn(int n){
+		
+		PositionList<Transaccion> l = new ListaDoblementeEnlazada<Transaccion>();
+		Iterator<Transaccion> it = historial.iterator();
+		int cant = 0;
+		
+		while (it.hasNext() && cant != n) {
+			l.addLast(it.next());
+			cant++;
+		}
+		
+		return l;
+		
+	}
+	
+	public void debito(int monto,CuentaBancaria beneficiario) throws SaldoInsuficienteException {
+		
+		if (getSaldo() < monto) 
+			throw new SaldoInsuficienteException("NO HAY SUFICIENTE SALDO PARA DEBITAR");
+		
+		setSaldo(getSaldo() - monto);
+		
+		Transaccion nueva = new Transaccion('d',monto,this,beneficiario);
+		
+		historial.addLast(nueva);
+			
+	}
+	
+	public void credito(int monto,CuentaBancaria emisor) {
+		
+		setSaldo(getSaldo() + monto);
+		
+		Transaccion nueva = new Transaccion('c',monto,emisor,this);
+		
+		historial.addLast(nueva);
 	}
 	
 }
