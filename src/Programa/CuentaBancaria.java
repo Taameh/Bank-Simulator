@@ -1,15 +1,12 @@
 package Programa;
 
-import TDALista.ListaDoblementeEnlazada;
-import TDALista.Position;
-import TDALista.PositionList;
 import java.util.Iterator;
-
-import Exceptions.EmptyQueueException;
-import Exceptions.EmptyStackException;
-import Exceptions.SaldoInsuficienteException;
+import Exceptions.*;
+import TDALista.*;
 import TDACola.*;
+import TDADiccionario.*;
 import TDAPila.*;
+import TDAColaCP.*;
 
 public class CuentaBancaria {
 	
@@ -135,7 +132,7 @@ public class CuentaBancaria {
 		return valido;
 	}
 	
-	public PositionList<Transaccion> ultimasn(int n){
+	public PositionList<Transaccion> ultimasN(int n){
 		
 		PositionList<Transaccion> l = new ListaDoblementeEnlazada<Transaccion>();
 		Iterator<Transaccion> it = historial.iterator();
@@ -171,5 +168,90 @@ public class CuentaBancaria {
 		
 		historial.addLast(nueva);
 	}
+	
+	//Dictionary transaccionesMismoValor() retorna un diccionario con Entry<Valor, Transaccion>
+	
+	public Dictionary<Integer,Transaccion> transaccionesMismoValor() {
+		
+		Iterator<Transaccion> it = historial.iterator();
+		
+		Dictionary<Integer,Transaccion> nueva = new DiccionarioHashAbierto<Integer,Transaccion>();
+		
+		Transaccion x;
+		try {
+	
+			while (it.hasNext()) {
+				x = it.next();
+				nueva.insert(x.getMonto(), x);
+			}
+			
+		}catch(InvalidKeyException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return nueva;
+		
+	}
+	
+	
+	//PositionList<Transaccion> historialDia(int fecha) retorna transacciones de una fecha determinada
+	
+	public PositionList<Transaccion> historialDia(String fecha){
+		
+		PositionList<Transaccion> nueva = new ListaDoblementeEnlazada<Transaccion>();
+		Iterator<Transaccion> it = historial.iterator();
+		
+		Transaccion x;
+		
+		while (it.hasNext()) {
+			x = it.next();
+			if (x.getFecha() == fecha) {
+				nueva.addLast(x);
+			}
+		}
+		
+		
+		return nueva;
+		
+	}
+	
+	
+	/*PriorityQueue<Entry<int, Transaccion>> TransaccionesEncimaDe(int m, boolean deb, boolean cred) retorna ColaConPrioridad
+	  de entradas con monto y la transaccion, dichas entradas deben superar el monto m.
+	  si deb es true, la lista incluye debitos, lo mismo con cred.*/
+	
+	public PriorityQueue<Integer,Transaccion> transaccionesEncimaDe(int m,boolean deb,boolean cred) {
+		
+		PriorityQueue<Integer,Transaccion> nueva = new ColaCPHeap<Integer,Transaccion>();
+		Iterator<Transaccion> it = historial.iterator();
+		Transaccion x;
+		
+		try {
+			while (it.hasNext()) {
+				
+				x = it.next();
+				if (deb == true) {
+					if (x.getTipo() == 'd') 
+						nueva.insert(x.getMonto(),x);
+				}else {
+					if (cred == true) {
+						if (x.getTipo() == 'c') 
+							nueva.insert(x.getMonto(), x);
+					}
+				}
+			}
+			
+			
+		}catch(InvalidKeyException e) {
+			e.printStackTrace();
+		}
+		
+		return nueva;
+	}
+	
+	
+	
+	
 	
 }
