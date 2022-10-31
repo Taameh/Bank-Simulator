@@ -18,22 +18,7 @@ public class Logica {
 	private static CuentaBancaria sesionActual;
 
 	
-	public static void main(String[] args) {
-		cuentas = new ListaDoblementeEnlazada<CuentaBancaria>();
-		sesionActual = null;
-		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LogInFrame window = new LogInFrame();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
+
 	
 	
 	public void signIn(String nombre, String apellido, int dni, int saldo) {
