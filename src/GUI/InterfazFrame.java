@@ -12,6 +12,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.JDesktopPane;
 import javax.swing.JSplitPane;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.JSpinner;
@@ -21,10 +22,20 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import Programa.CuentaBancaria;
+import Programa.Logica;
+
 import javax.swing.JScrollPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JCheckBox;
 
 public class InterfazFrame {
 
+	private Logica logica;
+	private CuentaBancaria sesion;
+	
 	private JFrame frmBancoEdd;
 	private JTextField txtNombreApellido;
 	private JTextField textFieldSaldo;
@@ -36,28 +47,17 @@ public class InterfazFrame {
 	private JTextField textFieldDia2;
 	private JTextField textFieldMes2;
 	private JTextField textFieldAño2;
-	private JTextField textField_3;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					InterfazFrame window = new InterfazFrame();
-					window.frmBancoEdd.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private JCheckBox chckbxDebito;
+	private JCheckBox chckbxCredito;
+	private JTextField textFieldMonto;
+	
 
 	/**
 	 * Create the application.
 	 */
-	public InterfazFrame() {
+	public InterfazFrame(Logica l) {
+		logica = l;
+		sesion = logica.getSesionActual();
 		initialize();
 	}
 
@@ -65,22 +65,22 @@ public class InterfazFrame {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmBancoEdd = new JFrame();
-		frmBancoEdd.setTitle("Banco EDD");
-		frmBancoEdd.setBounds(100, 100, 500, 534);
-		frmBancoEdd.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmBancoEdd.getContentPane().setLayout(null);
+		setFrmBancoEdd(new JFrame());
+		getFrmBancoEdd().setTitle("Banco EDD");
+		getFrmBancoEdd().setBounds(100, 100, 500, 534);
+		getFrmBancoEdd().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		getFrmBancoEdd().getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(130, 130, 130)));
 		panel.setBackground(new Color(255, 255, 255));
 		panel.setBounds(0, 0, 484, 40);
-		frmBancoEdd.getContentPane().add(panel);
+		getFrmBancoEdd().getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		txtNombreApellido = new JTextField();
 		txtNombreApellido.setEditable(false);
-		txtNombreApellido.setText("Nombre Apellido");
+		txtNombreApellido.setText(sesion.getNombre() + " " + sesion.getApellido());
 		txtNombreApellido.setFont(new Font("Montserrat SemiBold", Font.PLAIN, 15));
 		txtNombreApellido.setBounds(10, 11, 210, 20);
 		txtNombreApellido.setBorder(null);
@@ -89,6 +89,29 @@ public class InterfazFrame {
 		txtNombreApellido.setColumns(10);
 		
 		JButton btnSalir = new JButton("Salir");
+		btnSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int salir = JOptionPane.showConfirmDialog(btnSalir, "¿Desea cerrar sesión?", "Cerrar sesión", 2);
+				if (salir == 0) {
+					//cierro sesion
+					sesion = null;
+					//inicio ventana de logIn
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							try {
+								LogInFrame window = new LogInFrame(logica);
+								window.getFrmBancoeddInicio().setVisible(true);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					});
+				//Cierro ventana de interfaz
+					frmBancoEdd.dispose();
+				
+				}
+			}
+		});
 		btnSalir.setToolTipText("Cerrar sesión");
 		btnSalir.setFont(new Font("Montserrat", Font.PLAIN, 11));
 		btnSalir.setBounds(406, 10, 68, 23);
@@ -99,10 +122,28 @@ public class InterfazFrame {
 		ButtonArea.setBackground(new Color(245, 245, 245));
 		ButtonArea.setBorder(new LineBorder(new Color(192, 192, 192)));
 		ButtonArea.setBounds(10, 51, 280, 43);
-		frmBancoEdd.getContentPane().add(ButtonArea);
+		getFrmBancoEdd().getContentPane().add(ButtonArea);
 		ButtonArea.setLayout(null);
 		
 		JButton btnDebito = new JButton("Realizar débito");
+		btnDebito.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//lanzo ventana de debito
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							DebitoFrame window = new DebitoFrame(logica);
+							window.getFrmBancoEdd().setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+			}
+			
+			
+			///////////////////////////////////////////////////////////////////////////////////////////TERMINAR/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		});
 		btnDebito.setFont(new Font("Montserrat Medium", Font.PLAIN, 11));
 		btnDebito.setToolTipText("Realizar débito");
 		btnDebito.setBounds(10, 11, 125, 23);
@@ -119,13 +160,13 @@ public class InterfazFrame {
 		SaldoArea.setBorder(new LineBorder(new Color(192, 192, 192)));
 		SaldoArea.setBackground(new Color(245, 245, 245));
 		SaldoArea.setBounds(300, 51, 174, 43);
-		frmBancoEdd.getContentPane().add(SaldoArea);
+		getFrmBancoEdd().getContentPane().add(SaldoArea);
 		
 		textFieldSaldo = new JTextField();
 		textFieldSaldo.setBackground(new Color(245, 245, 245));
 		textFieldSaldo.setFont(new Font("Montserrat SemiBold", Font.PLAIN, 18));
 		textFieldSaldo.setHorizontalAlignment(SwingConstants.TRAILING);
-		textFieldSaldo.setText("123456.00");
+		textFieldSaldo.setText("12003.50");
 		textFieldSaldo.setEditable(false);
 		textFieldSaldo.setBounds(44, 0, 130, 43);
 		SaldoArea.add(textFieldSaldo);
@@ -146,14 +187,21 @@ public class InterfazFrame {
 		HistoryArea.setBackground(new Color(245, 245, 245));
 		HistoryArea.setBounds(10, 105, 464, 345);
 		HistoryArea.setBorder(new LineBorder(new Color(192, 192, 192)));
-		frmBancoEdd.getContentPane().add(HistoryArea);
+		getFrmBancoEdd().getContentPane().add(HistoryArea);
 		HistoryArea.setLayout(null);
 		
-		JComboBox comboBoxMostrar = new JComboBox();
-		comboBoxMostrar.setFont(new Font("Montserrat Medium", Font.PLAIN, 11));
-		comboBoxMostrar.setModel(new DefaultComboBoxModel(new String[] {"Mostrar todas", "Mostrar últimas N", "Mostrar N mayor Valor", "Mostrar fecha específica", "Mostrar valor superior a N"}));
-		comboBoxMostrar.setBounds(10, 11, 165, 22);
-		HistoryArea.add(comboBoxMostrar);
+		chckbxDebito = new JCheckBox("Debito");
+		chckbxDebito.setFont(new Font("Montserrat Light", Font.PLAIN, 9));
+		chckbxDebito.setBackground(new Color(245, 245, 245));
+		chckbxDebito.setBounds(211, 11, 57, 23);
+		HistoryArea.add(chckbxDebito);
+		
+		chckbxCredito = new JCheckBox("Credito");
+		chckbxCredito.setFont(new Font("Montserrat Light", Font.PLAIN, 9));
+		chckbxCredito.setBackground(new Color(245, 245, 245));
+		chckbxCredito.setBounds(270, 11, 61, 23);
+		HistoryArea.add(chckbxCredito);
+		
 		
 		textFieldDia = new JTextField();
 		textFieldDia.setFont(new Font("Montserrat Medium", Font.PLAIN, 11));
@@ -176,7 +224,79 @@ public class InterfazFrame {
 		textFieldAño.setBounds(235, 12, 35, 20);
 		HistoryArea.add(textFieldAño);
 		
+		textFieldMonto = new JTextField();
+		textFieldMonto.setToolTipText("Monto");
+		textFieldMonto.setFont(new Font("Montserrat Medium", Font.PLAIN, 11));
+		textFieldMonto.setColumns(10);
+		textFieldMonto.setBounds(185, 12, 85, 20);
+		HistoryArea.add(textFieldMonto);
+		
+		JComboBox comboBoxMostrar = new JComboBox();
+		comboBoxMostrar.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	if (comboBoxMostrar.getSelectedIndex() == 0) {
+		    		textFieldDia.setVisible(false);
+		    		textFieldMes.setVisible(false);
+		    		textFieldAño.setVisible(false);
+		    		textFieldMonto.setVisible(false);
+		    		chckbxDebito.setVisible(false);
+		    		chckbxCredito.setVisible(false);
+		    	}
+		    	else if (comboBoxMostrar.getSelectedIndex() == 1 || comboBoxMostrar.getSelectedIndex() == 2)  {
+		    		textFieldDia.setVisible(true);
+		    		textFieldDia.setToolTipText("N");
+		    		textFieldMes.setVisible(false);
+		    		textFieldAño.setVisible(false);
+		    		textFieldMonto.setVisible(false);
+		    		chckbxDebito.setVisible(false);
+		    		chckbxCredito.setVisible(false);
+		    	}
+		    	else if (comboBoxMostrar.getSelectedIndex() == 3) {
+		    		textFieldDia.setVisible(true);
+		    		textFieldDia.setToolTipText("Día");
+		    		textFieldMes.setVisible(true);
+		    		textFieldAño.setVisible(true);
+		    		textFieldMonto.setVisible(false);
+		    		chckbxDebito.setVisible(false);
+		    		chckbxCredito.setVisible(false);
+		    	}
+		    	else if (comboBoxMostrar.getSelectedIndex() == 4) {
+		    		textFieldDia.setVisible(true);
+		    		textFieldDia.setToolTipText("Monto");
+		    		textFieldMes.setVisible(false);
+		    		textFieldAño.setVisible(false);
+		    		textFieldMonto.setVisible(false);
+		    		chckbxDebito.setVisible(true);
+		    		chckbxCredito.setVisible(true);
+		    	}
+		    }
+		});
+		comboBoxMostrar.setFont(new Font("Montserrat Medium", Font.PLAIN, 11));
+		comboBoxMostrar.setModel(new DefaultComboBoxModel(new String[] {"Mostrar todas", "Mostrar últimas N", "Mostrar N mayor Valor", "Mostrar fecha específica", "Mostrar valor superior a N"}));
+		comboBoxMostrar.setSelectedIndex(0);
+		comboBoxMostrar.setBounds(10, 11, 165, 22);
+		HistoryArea.add(comboBoxMostrar);
+		
 		JButton btnConfirmar = new JButton("Confirmar");
+		btnConfirmar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(comboBoxMostrar.getSelectedIndex() == 0) {
+					//Mostrar todas
+				}
+				else if(comboBoxMostrar.getSelectedIndex() == 1) {
+					//Mostrar ultimas N
+				}
+				else if(comboBoxMostrar.getSelectedIndex() == 2) {
+					//Mostrar N mayor valor
+				}
+				else if(comboBoxMostrar.getSelectedIndex() == 3) {
+					//Mostrar Fecha especifica
+				}
+				else if(comboBoxMostrar.getSelectedIndex() == 4) {
+					//Mostrar Valor Superior a N
+				}
+			}
+		});
 		btnConfirmar.setFont(new Font("Montserrat Medium", Font.PLAIN, 11));
 		btnConfirmar.setBounds(334, 11, 120, 23);
 		HistoryArea.add(btnConfirmar);
@@ -212,7 +332,7 @@ public class InterfazFrame {
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				Integer.class, String.class, Integer.class, Integer.class, String.class, String.class
+				String.class, String.class, Integer.class, Integer.class, String.class, String.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
@@ -220,37 +340,38 @@ public class InterfazFrame {
 		});
 		scrollPane.setViewportView(tableTransacciones);
 		
-		textField_3 = new JTextField();
-		textField_3.setToolTipText("Año");
-		textField_3.setFont(new Font("Montserrat Medium", Font.PLAIN, 11));
-		textField_3.setColumns(10);
-		textField_3.setBounds(185, 12, 85, 20);
-		HistoryArea.add(textField_3);
-		
 		JButton btnConfirmar_1 = new JButton("Calcular saldo");
 		btnConfirmar_1.setFont(new Font("Montserrat Medium", Font.PLAIN, 11));
 		btnConfirmar_1.setBounds(10, 461, 120, 23);
-		frmBancoEdd.getContentPane().add(btnConfirmar_1);
+		getFrmBancoEdd().getContentPane().add(btnConfirmar_1);
 		
 		textFieldDia2 = new JTextField();
 		textFieldDia2.setFont(new Font("Montserrat Medium", Font.PLAIN, 11));
 		textFieldDia2.setToolTipText("Día");
 		textFieldDia2.setColumns(10);
 		textFieldDia2.setBounds(140, 462, 20, 20);
-		frmBancoEdd.getContentPane().add(textFieldDia2);
+		getFrmBancoEdd().getContentPane().add(textFieldDia2);
 		
 		textFieldMes2 = new JTextField();
 		textFieldMes2.setFont(new Font("Montserrat Medium", Font.PLAIN, 11));
 		textFieldMes2.setToolTipText("Mes");
 		textFieldMes2.setColumns(10);
 		textFieldMes2.setBounds(165, 462, 20, 20);
-		frmBancoEdd.getContentPane().add(textFieldMes2);
+		getFrmBancoEdd().getContentPane().add(textFieldMes2);
 		
 		textFieldAño2 = new JTextField();
 		textFieldAño2.setFont(new Font("Montserrat Medium", Font.PLAIN, 11));
 		textFieldAño2.setToolTipText("Año");
 		textFieldAño2.setColumns(10);
 		textFieldAño2.setBounds(190, 462, 35, 20);
-		frmBancoEdd.getContentPane().add(textFieldAño2);
+		getFrmBancoEdd().getContentPane().add(textFieldAño2);
+	}
+
+	public JFrame getFrmBancoEdd() {
+		return frmBancoEdd;
+	}
+
+	public void setFrmBancoEdd(JFrame frmBancoEdd) {
+		this.frmBancoEdd = frmBancoEdd;
 	}
 }
