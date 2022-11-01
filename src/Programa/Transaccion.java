@@ -8,7 +8,7 @@ public class Transaccion {
 	// ATRIBUTOS
 	
 	protected char tipo;
-	protected int monto;
+	protected float monto;
 	protected String fecha;
 	protected String hora;
 	protected CuentaBancaria emisor;
@@ -16,7 +16,7 @@ public class Transaccion {
 	
 	//CONSTRUCTOR
 		
-	public Transaccion(char t,int m,CuentaBancaria e,CuentaBancaria r) {
+	public Transaccion(char t,float m,CuentaBancaria e,CuentaBancaria r) {
 		tipo = t;
 		monto = m;
 		emisor = e;
@@ -36,7 +36,7 @@ public class Transaccion {
 		return tipo;
 	}
 	
-	public int getMonto() {
+	public float getMonto() {
 		return monto;
 	}
 	

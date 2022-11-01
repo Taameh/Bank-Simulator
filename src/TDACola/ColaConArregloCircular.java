@@ -19,7 +19,7 @@ public class ColaConArregloCircular <E> implements Queue<E>{
 	public int size() {
 		return ((queue.length)-head+tail)%queue.length;
 	}
-	
+	 
 	
 	
 	@Override

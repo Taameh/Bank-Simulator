@@ -15,7 +15,7 @@ public class CuentaBancaria {
 	protected String nombre;
 	protected String apellido;
 	protected int DNI;
-	protected int saldo;
+	protected float saldo;
 	protected PositionList<Transaccion> historial;
 	
 	// CONSTRUCTOR
@@ -52,11 +52,11 @@ public class CuentaBancaria {
 		DNI = dNI;
 	}
 
-	public int getSaldo() {
+	public float getSaldo() {
 		return saldo;
 	}
 
-	public void setSaldo(int saldo) {
+	public void setSaldo(float saldo) {
 		this.saldo = saldo;
 	}
 	
@@ -81,7 +81,7 @@ public class CuentaBancaria {
 	
 	//SE ASUME QUE EL APELLIDO NO LLEVA X
 	
-	public boolean validarCadena(String cadena) {
+	public boolean validarCadena(String cadena) throws LogueoInvalidoException {
 		
 		
 		boolean valido = true;
@@ -99,34 +99,34 @@ public class CuentaBancaria {
 		
 		try {
 		
-			while (col.front() != 'x' && valido && !col.isEmpty()) {
-				Character aux = col.dequeue();
-				if (aux != c2.dequeue())
-					valido = false;
-			}
-			
-			if (col.front() == 'x')
-				col.dequeue();
-			else
-				valido = false;
-			
-			
-			while (!col.isEmpty() && !s.isEmpty() && valido) {
-				if (s.pop() != col.dequeue())
-					valido = false;
-			}
-			
-			while (!col.isEmpty() && !s2.isEmpty() & valido) {
-				if (s2.pop() != col.dequeue()) {
-					valido = false;
+				while (valido && !col.isEmpty() && col.front() != 'x') {
+					Character aux = col.dequeue();
+					if (aux != c2.dequeue()) 
+						valido = false;
 				}
-			}
 				
-		}catch(EmptyQueueException e) {
-			e.printStackTrace();
-		} catch (EmptyStackException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+				if (valido && !col.isEmpty() && col.front() == 'x')
+					col.dequeue();
+				else 
+					valido = false;
+				
+				while (valido && !col.isEmpty() && !s.isEmpty()) {
+					if (s.pop() != col.dequeue()) 
+						valido = false;
+				}
+				
+				while (valido && !col.isEmpty() && !s2.isEmpty()) {
+					if (s2.pop() != col.dequeue()) 
+						valido = false;
+					
+				}
+					
+				if(!col.isEmpty() || !s.isEmpty() || !s2.isEmpty()) 
+					valido = false;
+				
+			}
+		catch(EmptyQueueException | EmptyStackException e) {
+			System.out.println("Error en el manejo de la estructura de datos.");
 		}
 		
 		return valido;
@@ -147,7 +147,7 @@ public class CuentaBancaria {
 		
 	}
 	
-	public void debito(int monto,CuentaBancaria beneficiario) throws SaldoInsuficienteException {
+	public void debito(float monto,CuentaBancaria beneficiario) throws SaldoInsuficienteException {
 		
 		if (getSaldo() < monto) 
 			throw new SaldoInsuficienteException("NO HAY SUFICIENTE SALDO PARA DEBITAR");
@@ -160,7 +160,7 @@ public class CuentaBancaria {
 			
 	}
 	
-	public void credito(int monto,CuentaBancaria emisor) {
+	public void credito(float monto,CuentaBancaria emisor) {
 		
 		setSaldo(getSaldo() + monto);
 		
@@ -171,11 +171,11 @@ public class CuentaBancaria {
 	
 	//Dictionary transaccionesMismoValor() retorna un diccionario con Entry<Valor, Transaccion>
 	
-	public Dictionary<Integer,Transaccion> transaccionesMismoValor() {
+	public Dictionary<Float,Transaccion> transaccionesMismoValor() {
 		
 		Iterator<Transaccion> it = historial.iterator();
 		
-		Dictionary<Integer,Transaccion> nueva = new DiccionarioHashAbierto<Integer,Transaccion>();
+		Dictionary<Float,Transaccion> nueva = new DiccionarioHashAbierto<Float,Transaccion>();
 		
 		Transaccion x;
 		try {
@@ -221,9 +221,9 @@ public class CuentaBancaria {
 	  de entradas con monto y la transaccion, dichas entradas deben superar el monto m.
 	  si deb es true, la lista incluye debitos, lo mismo con cred.*/
 	
-	public PriorityQueue<Integer,Transaccion> transaccionesEncimaDe(int m,boolean deb,boolean cred) {
+	public PriorityQueue<Float,Transaccion> transaccionesEncimaDe(int m,boolean deb,boolean cred) {
 		
-		PriorityQueue<Integer,Transaccion> nueva = new ColaCPHeap<Integer,Transaccion>();
+		PriorityQueue<Float,Transaccion> nueva = new ColaCPHeap<Float,Transaccion>();
 		Iterator<Transaccion> it = historial.iterator();
 		Transaccion x;
 		
