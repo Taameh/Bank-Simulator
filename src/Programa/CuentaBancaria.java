@@ -231,11 +231,11 @@ public class CuentaBancaria {
 			while (it.hasNext()) {
 				
 				x = it.next();
-				if (deb == true) {
+				if (deb == true  && x.getMonto() > m) {
 					if (x.getTipo() == 'd') 
 						nueva.insert(x.getMonto(),x);
 				}else {
-					if (cred == true) {
+					if (cred == true && x.getMonto() > m) {
 						if (x.getTipo() == 'c') 
 							nueva.insert(x.getMonto(), x);
 					}

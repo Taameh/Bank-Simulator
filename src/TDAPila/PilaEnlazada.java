@@ -3,7 +3,7 @@ package TDAPila;
 import Exceptions.EmptyStackException;
 
 
-public class PilaEnlazada <E> implements Stack{
+public class PilaEnlazada<E> implements Stack<E>{
 	private Nodo<E> top;
 	private int size = 0;
 	
@@ -19,7 +19,7 @@ public class PilaEnlazada <E> implements Stack{
 	}
 
 	@Override
-	public Object top() throws EmptyStackException {
+	public E top() throws EmptyStackException {
 		if (size == 0) {
 			throw new EmptyStackException("La Pila esta vacia");
 		}
@@ -27,15 +27,14 @@ public class PilaEnlazada <E> implements Stack{
 	}
 
 	@Override
-	public void push(Object element) {
+	public void push(E element) {
 		Nodo<E> n = new Nodo(element, top);
 		top = n;
 		size ++;
-		
 	}
 
 	@Override
-	public Object pop() throws EmptyStackException {
+	public E pop() throws EmptyStackException {
 		if (size == 0) {
 			throw new EmptyStackException("La Pila esta vacia");
 		}
