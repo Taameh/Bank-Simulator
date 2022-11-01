@@ -2,8 +2,14 @@ package Programa;
 
 import java.awt.EventQueue;
 
+
 import GUI.LogInFrame;
 import TDALista.ListaDoblementeEnlazada;
+
+/**
+ * Clase Main
+ * @author Arroyo Tomas (126078) - Fernandez Maximo (131672)
+ */
 
 public class Main {
 

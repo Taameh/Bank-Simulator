@@ -21,6 +21,14 @@ public class Logica {
 		setSesionActual(null);
 	}
 	
+	/**
+	 * 
+	 * @param nombre
+	 * @param apellido
+	 * @param dni
+	 * @param saldo
+	 * @throws RegistroInvalidoException
+	 */
 	public void signIn(String nombre, String apellido, int dni, int saldo) throws RegistroInvalidoException {
 		if(!nombre.equals("") && !apellido.equals(""))
 		cuentas.addLast(new CuentaBancaria(nombre, apellido, dni, saldo));
@@ -28,6 +36,14 @@ public class Logica {
 			throw new RegistroInvalidoException ("Campos vacios");
 	}
 	
+	/**
+	 * 
+	 * @param clave
+	 * @param nombre
+	 * @param apellido
+	 * @param dni
+	 * @throws LogueoInvalidoException
+	 */
 	public void logIn(String clave, String nombre, String apellido, int dni) throws LogueoInvalidoException{
 		CuentaBancaria cuenta = buscarCuenta(dni);
 		if ((cuenta!=null) && (nombre.equals(cuenta.getNombre())) && (apellido.equals(cuenta.getApellido())) && cuenta.validarCadena(clave)) {
@@ -38,7 +54,12 @@ public class Logica {
 	
 
 	
-	
+	/**
+	 * 
+	 * @param monto
+	 * @param dni
+	 * @throws TransaccionInvalidaException
+	 */
 	public void debito(float monto, int dni) throws TransaccionInvalidaException{
 		try{
 			CuentaBancaria beneficiario = buscarCuenta(dni);
@@ -54,6 +75,12 @@ public class Logica {
 			}
 	}
 	
+	/**
+	 * 
+	 * @param monto
+	 * @param dni
+	 * @throws TransaccionInvalidaException
+	 */
 	public void credito(int monto, int dni) throws TransaccionInvalidaException{ //solo recibe dinero
 		CuentaBancaria emisor = buscarCuenta(dni);
 		if (emisor != null) {
@@ -64,12 +91,20 @@ public class Logica {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param n
+	 */
 	public void mostrarUltimasN(int n) {
 		for(Transaccion transaccion : getSesionActual().ultimasN(n)) {
 			//mostrar en gui
 		}
 	}
 	
+	/**
+	 * 
+	 * @param k
+	 */
 	public void transaccionesValorK(int k) {
 //		Iterable<Entry<Integer, Transaccion>> transacciones = sesionActual.transaccionesMismoValor().findAllK(k);
 //		for(<Entry<Integer, Transaccion>> transaccion : transacciones) {
