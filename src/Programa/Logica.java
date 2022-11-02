@@ -21,7 +21,7 @@ public class Logica {
 		setSesionActual(null);
 	}
 	
-	public void signIn(String nombre, String apellido, int dni, int saldo) throws RegistroInvalidoException {
+	public void signIn(String nombre, String apellido, int dni, float saldo) throws RegistroInvalidoException {
 		if(!nombre.equals("") && !apellido.equals(""))
 		cuentas.addLast(new CuentaBancaria(nombre, apellido, dni, saldo));
 		else
@@ -43,7 +43,7 @@ public class Logica {
 		try{
 			CuentaBancaria beneficiario = buscarCuenta(dni);
 			if (beneficiario != null) {
-				getSesionActual().debito(monto, beneficiario);
+				sesionActual.debito(monto, beneficiario);
 				beneficiario.credito(monto,getSesionActual()); //Las transferencias se ven reflejadas desde el lado del receptor como un credito
 			}
 			else {
@@ -54,10 +54,10 @@ public class Logica {
 			}
 	}
 	
-	public void credito(int monto, int dni) throws TransaccionInvalidaException{ //solo recibe dinero
+	public void credito(float monto, int dni) throws TransaccionInvalidaException{ //solo recibe dinero
 		CuentaBancaria emisor = buscarCuenta(dni);
 		if (emisor != null) {
-			getSesionActual().credito(monto,emisor); //Las transferencias se ven reflejadas desde el lado del receptor como un credito		
+			sesionActual.credito(monto,emisor); //Las transferencias se ven reflejadas desde el lado del receptor como un credito		
 		}
 		else {
 			throw new TransaccionInvalidaException("Emisor invalido");
@@ -65,7 +65,7 @@ public class Logica {
 	}
 	
 	public void mostrarUltimasN(int n) {
-		for(Transaccion transaccion : getSesionActual().ultimasN(n)) {
+		for(Transaccion transaccion : sesionActual.ultimasN(n)) {
 			//mostrar en gui
 		}
 	}

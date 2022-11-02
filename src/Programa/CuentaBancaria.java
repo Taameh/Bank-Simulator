@@ -20,7 +20,7 @@ public class CuentaBancaria {
 	
 	// CONSTRUCTOR
 	
-	public CuentaBancaria(String n,String a,int d,int s) {
+	public CuentaBancaria(String n,String a,int d,float s) {
 		nombre = n;
 		apellido = a;
 		DNI = d;
@@ -148,21 +148,27 @@ public class CuentaBancaria {
 	}
 	
 	public void debito(float monto,CuentaBancaria beneficiario) throws SaldoInsuficienteException {
+
+		System.out.println("saldo previo: " + saldo);
 		
-		if (getSaldo() < monto) 
-			throw new SaldoInsuficienteException("NO HAY SUFICIENTE SALDO PARA DEBITAR");
-		
-		setSaldo(getSaldo() - monto);
-		
-		Transaccion nueva = new Transaccion('d',monto,this,beneficiario);
-		
-		historial.addLast(nueva);
+		if (saldo < monto) 
+			throw new SaldoInsuficienteException("No hay saldo suficiente para realizar la operación.");
+		else {
+			saldo = saldo - monto;
+
+			System.out.println("saldo intermedio: " + saldo);
 			
+			Transaccion nueva = new Transaccion('d',monto,this,beneficiario);
+			
+			historial.addLast(nueva);
+		}
+
+		System.out.println("saldo post: " + saldo);
 	}
 	
 	public void credito(float monto,CuentaBancaria emisor) {
 		
-		setSaldo(getSaldo() + monto);
+		saldo = saldo + monto;
 		
 		Transaccion nueva = new Transaccion('c',monto,emisor,this);
 		
