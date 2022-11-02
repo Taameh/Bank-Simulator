@@ -333,12 +333,13 @@ public class CuentaBancaria {
 			if (deb == true  && x.getMonto() > monto) {
 				if (x.getTipo() == 'd') 
 					nueva.addFirst(x);
-			}else {
-				if (cred == true && x.getMonto() > monto) {
-					if (x.getTipo() == 'c') 
-						nueva.addFirst(x);
-				}
 			}
+			
+			if (cred == true && x.getMonto() > monto) {
+				if (x.getTipo() == 'c') 
+					nueva.addFirst(x);
+			}
+		
 		}
 		
 		return nueva;
@@ -348,24 +349,21 @@ public class CuentaBancaria {
 	 * Devuelve una colaConPrioridad de las n transacciones de mayor valor, si n es menor a la cantidad de transacciones,
 	 * devuelve todas las transacciones realizadas
 	 * @param n
-	 * @return colaConPrioridad 
+	 * @return ColaCPHeap
 	 */
-	public PriorityQueue<Float,Transaccion> transaccionesPorValor(int n){
+	public PriorityQueue<Float,Transaccion> transaccionesPorValor(){
 		
 		PriorityQueue<Float,Transaccion> nueva = new ColaCPHeap<Float,Transaccion>();
 		Iterator<Transaccion> it = historial.iterator();
 		Transaccion x;
-		int cant = 0;
 		
 		try {
-			while (it.hasNext() && cant != n) {
+			while (it.hasNext()) {
 				x = it.next();
 				nueva.insert(x.getMonto(),x);
-				cant++;
 			}
 		} catch (InvalidKeyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Key invalida");
 		}
 		
 		return nueva;
@@ -373,7 +371,7 @@ public class CuentaBancaria {
 	}
 	
 	/**
-	 * Devuelve el saldo en una fecha especifica
+	 * Devuelve el saldo de la cuenta correspondiente a el final de una fecha especifica
 	 * @param dia
 	 * @param mes
 	 * @param año

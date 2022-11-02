@@ -358,10 +358,8 @@ public class InterfazFrame {
 				}
 				else if(comboBoxMostrar.getSelectedIndex() == 2) {
 					//Mostrar N mayor valor
-					//Iterable<Transaccion> transacciones = sesion.transaccionesPorValor(0).it;
 					limpiarTabla();
-					//mostrarTabla(transacciones);
-					JOptionPane.showMessageDialog(null, "Ta mal :("  , "Ta mal el metodo pa", 1);
+					mostrarTabla(logica.nMayores(Float.parseFloat( textFieldDia.getText())));
 				}
 
 				else if(comboBoxMostrar.getSelectedIndex() == 3) {
@@ -422,6 +420,8 @@ public class InterfazFrame {
 		textFieldAño2.setColumns(10);
 		textFieldAño2.setBounds(190, 462, 35, 20);
 		getFrmBancoEdd().getContentPane().add(textFieldAño2);
+		
+		mostrarTabla(sesion.getHistorial());
 	}
 	
 	

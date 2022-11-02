@@ -3,11 +3,15 @@ package Programa;
 import java.awt.EventQueue;
 import java.util.Iterator;
 
+import Exceptions.EmptyPriorityQueueException;
+import Exceptions.InvalidKeyException;
 import Exceptions.LogueoInvalidoException;
 import Exceptions.RegistroInvalidoException;
 import Exceptions.SaldoInsuficienteException;
 import Exceptions.TransaccionInvalidaException;
 import GUI.LogInFrame;
+import TDAColaCP.PriorityQueue;
+import TDADiccionario.Entry;
 import TDALista.ListaDoblementeEnlazada;
 import TDALista.PositionList;
 
@@ -92,31 +96,38 @@ public class Logica {
 		}
 	}
 	
-	/**
-	 * 
-	 * @param n
-	 */
-	public void mostrarUltimasN(int n) {
-		for(Transaccion transaccion : sesionActual.ultimasN(n)) {
-			//mostrar en gui
-		}
-	}
 	
 	/**
 	 * 
 	 * @param k
+	 * @throws InvalidKeyException 
 	 */
-	public void transaccionesValorK(int k) {
-//		Iterable<Entry<Integer, Transaccion>> transacciones = sesionActual.transaccionesMismoValor().findAllK(k);
-//		for(<Entry<Integer, Transaccion>> transaccion : transacciones) {
-			//mostrar en gui
-//		}
-			
+	public PositionList<Transaccion> transaccionesValorK(float k) throws InvalidKeyException {
+		PositionList<Transaccion> toReturn = new ListaDoblementeEnlazada();
+		try {
+			for(Entry<Float, Transaccion> e : sesionActual.transaccionesMismoValor().findAll(k))
+				toReturn.addFirst(e.getValue());
+		} catch (InvalidKeyException e) {
+			throw new InvalidKeyException ("Ingrese un valor valido");
+		}
+		return toReturn;
 	}
 	
-	public void historialDia(String fecha) {
-		
+	public Iterable<Transaccion> nMayores(float f){
+		PositionList<Transaccion> toReturn = new ListaDoblementeEnlazada<Transaccion>();
+		PriorityQueue <Float,Transaccion> todasLasTransacciones = sesionActual.transaccionesPorValor();
+		try {
+			while(!todasLasTransacciones.isEmpty() && todasLasTransacciones.size() >= f)
+					todasLasTransacciones.removeMin();
+			while(!todasLasTransacciones.isEmpty())
+				toReturn.addFirst(todasLasTransacciones.removeMin().getValue());
+		} catch (EmptyPriorityQueueException e) {
+			System.out.println("Error en el manejor de la estructura");
+		}
+		return toReturn;
 	}
+	
+
 	
 	private CuentaBancaria buscarCuenta(int dni) {
 		boolean encontre = false;
