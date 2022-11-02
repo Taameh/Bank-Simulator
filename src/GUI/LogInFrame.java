@@ -148,6 +148,7 @@ public class LogInFrame {
 								try {
 									InterfazFrame window = new InterfazFrame(logica);
 									window.getFrmBancoEdd().setVisible(true);
+									
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
@@ -166,7 +167,7 @@ public class LogInFrame {
 							int dni = Integer.parseInt(textFieldDNI.getText());
 							int monto;
 							if (!textFieldDNI.getText().equals(""))
-								monto = Integer.parseInt(textFieldDNI.getText());
+								monto = Integer.parseInt(textFieldClave.getText());
 							else {
 								monto = 0;
 							}
@@ -232,5 +233,6 @@ public class LogInFrame {
 
 	public void setFrmBancoeddInicio(JFrame frmBancoeddInicio) {
 		this.frmBancoeddInicio = frmBancoeddInicio;
+		frmBancoeddInicio.setResizable(false);
 	}
 }

@@ -25,9 +25,13 @@ import javax.swing.table.DefaultTableModel;
 
 import Programa.CuentaBancaria;
 import Programa.Logica;
+import Programa.Transaccion;
+import TDALista.PositionList;
 
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 
@@ -50,8 +54,8 @@ public class InterfazFrame {
 	private JCheckBox chckbxDebito;
 	private JCheckBox chckbxCredito;
 	private JTextField textFieldMonto;
-	
-
+	private DefaultTableModel model;
+	private JComboBox comboBoxMostrar;
 	/**
 	 * Create the application.
 	 */
@@ -134,22 +138,56 @@ public class InterfazFrame {
 						try {
 							DebitoFrame window = new DebitoFrame(logica);
 							window.getFrmBancoEdd().setVisible(true);
+							window.getFrmBancoEdd().addWindowListener(new java.awt.event.WindowAdapter() {
+						        @Override
+						        public void windowClosed(WindowEvent windowEvent) {
+						        	textFieldSaldo.setText(String.valueOf(sesion.getSaldo()));
+						        	limpiarTabla();
+						        	mostrarTabla(sesion.getHistorial());
+						        	comboBoxMostrar.setSelectedIndex(0);
+						        }
+						    });
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
+						
 					}
 				});
+				
 			}
 			
 			
-			///////////////////////////////////////////////////////////////////////////////////////////TERMINAR/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		});
 		btnDebito.setFont(new Font("Montserrat Medium", Font.PLAIN, 11));
 		btnDebito.setToolTipText("Realizar débito");
 		btnDebito.setBounds(10, 11, 125, 23);
 		ButtonArea.add(btnDebito);
 		
+		
+		
 		JButton btnCredito = new JButton("Realizar crédito");
+		btnCredito.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//lanzo ventana credito
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							try {
+								CreditoFrame window = new CreditoFrame(logica);
+								window.getFrmBancoEdd().setVisible(true);
+								window.getFrmBancoEdd().addWindowListener(new java.awt.event.WindowAdapter() {
+							        @Override
+							        public void windowClosed(WindowEvent windowEvent) {
+							        	textFieldSaldo.setText(String.valueOf(sesion.getSaldo()));
+							        }
+							    });
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					});
+				
+			}
+		});
 		btnCredito.setFont(new Font("Montserrat Medium", Font.PLAIN, 11));
 		btnCredito.setBounds(145, 11, 125, 23);
 		ButtonArea.add(btnCredito);
@@ -166,7 +204,7 @@ public class InterfazFrame {
 		textFieldSaldo.setBackground(new Color(245, 245, 245));
 		textFieldSaldo.setFont(new Font("Montserrat SemiBold", Font.PLAIN, 18));
 		textFieldSaldo.setHorizontalAlignment(SwingConstants.TRAILING);
-		textFieldSaldo.setText("12003.50");
+		textFieldSaldo.setText(String.valueOf(sesion.getSaldo()));
 		textFieldSaldo.setEditable(false);
 		textFieldSaldo.setBounds(44, 0, 130, 43);
 		SaldoArea.add(textFieldSaldo);
@@ -231,7 +269,28 @@ public class InterfazFrame {
 		textFieldMonto.setBounds(185, 12, 85, 20);
 		HistoryArea.add(textFieldMonto);
 		
-		JComboBox comboBoxMostrar = new JComboBox();
+		
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 45, 444, 289);
+		HistoryArea.add(scrollPane);
+		
+		tableTransacciones = new JTable();
+		
+		model=new DefaultTableModel();
+		tableTransacciones.setModel(model);
+		model.addColumn("Monto");
+		model.addColumn("Tipo");
+		model.addColumn("Emisor");
+		model.addColumn("Receptor");
+		model.addColumn("Fecha");
+		model.addColumn("Hora");
+		
+		
+		
+		scrollPane.setViewportView(tableTransacciones);
+		
+		comboBoxMostrar = new JComboBox();
 		comboBoxMostrar.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	if (comboBoxMostrar.getSelectedIndex() == 0) {
@@ -282,9 +341,15 @@ public class InterfazFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(comboBoxMostrar.getSelectedIndex() == 0) {
 					//Mostrar todas
+					Iterable<Transaccion> transacciones = sesion.getHistorial();
+					limpiarTabla();
+					mostrarTabla(transacciones);
 				}
 				else if(comboBoxMostrar.getSelectedIndex() == 1) {
 					//Mostrar ultimas N
+					Iterable<Transaccion> transacciones = sesion.ultimasN(Integer.parseInt(textFieldDia.getText()));
+					limpiarTabla();
+					mostrarTabla(transacciones);
 				}
 				else if(comboBoxMostrar.getSelectedIndex() == 2) {
 					//Mostrar N mayor valor
@@ -301,44 +366,6 @@ public class InterfazFrame {
 		btnConfirmar.setBounds(334, 11, 120, 23);
 		HistoryArea.add(btnConfirmar);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 45, 444, 289);
-		HistoryArea.add(scrollPane);
-		
-		tableTransacciones = new JTable();
-		tableTransacciones.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-			},
-			new String[] {
-				"Monto", "Tipo", "Emisor", "Receptor", "Fecha", "Hora"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, String.class, Integer.class, Integer.class, String.class, String.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		scrollPane.setViewportView(tableTransacciones);
 		
 		JButton btnConfirmar_1 = new JButton("Calcular saldo");
 		btnConfirmar_1.setFont(new Font("Montserrat Medium", Font.PLAIN, 11));
@@ -366,6 +393,8 @@ public class InterfazFrame {
 		textFieldAño2.setBounds(190, 462, 35, 20);
 		getFrmBancoEdd().getContentPane().add(textFieldAño2);
 	}
+	
+	
 
 	public JFrame getFrmBancoEdd() {
 		return frmBancoEdd;
@@ -374,4 +403,30 @@ public class InterfazFrame {
 	public void setFrmBancoEdd(JFrame frmBancoEdd) {
 		this.frmBancoEdd = frmBancoEdd;
 	}
+	
+	private void limpiarTabla() {
+		
+		while (model.getRowCount() > 0 ) 
+			model.removeRow(0);
+		}
+	
+	private void mostrarTabla(Iterable<Transaccion> lista) {
+		for(Transaccion t : lista) {
+			Object[] fila = new Object[6];
+			fila[0] = t.getMonto();
+			
+			if ( t.getTipo() == 'd')
+				fila[1] = "Débito";
+			else if (t.getTipo() == 'c')
+				fila[1] = "Crédito";
+			
+			fila[2] = t.getEmisor().getDNI();
+			fila[3] = t.getReceptor().getDNI();
+			fila[4] = t.getFecha();
+			fila[5] = t.getHora();
+			
+			model.addRow(fila);
+		}
+	}
+	
 }
