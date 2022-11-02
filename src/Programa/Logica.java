@@ -117,7 +117,7 @@ public class Logica {
 		PositionList<Transaccion> toReturn = new ListaDoblementeEnlazada<Transaccion>();
 		PriorityQueue <Float,Transaccion> todasLasTransacciones = sesionActual.transaccionesPorValor();
 		try {
-			while(!todasLasTransacciones.isEmpty() && todasLasTransacciones.size() >= f)
+			while(!todasLasTransacciones.isEmpty() && todasLasTransacciones.size() > f)
 					todasLasTransacciones.removeMin();
 			while(!todasLasTransacciones.isEmpty())
 				toReturn.addFirst(todasLasTransacciones.removeMin().getValue());

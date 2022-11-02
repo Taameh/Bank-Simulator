@@ -93,7 +93,9 @@ public class CreditoFrame {
 						}
 					} catch (TransaccionInvalidaException e1) {
 						JOptionPane.showMessageDialog(btnConfirmar, e1.getMessage(), "Error en la transaccion", 0);
-					} 
+					} catch(NumberFormatException e1){
+						JOptionPane.showMessageDialog(null, "Por favor, solo ingrese numeros", "Datos incorrectos", 0);
+					}
 				}
 			});
 			btnConfirmar.setBounds(85, 98, 89, 23);
