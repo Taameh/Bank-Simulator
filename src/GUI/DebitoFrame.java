@@ -16,6 +16,7 @@ import Programa.CuentaBancaria;
 import Programa.Logica;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Font;
 
 public class DebitoFrame {
 
@@ -44,11 +45,11 @@ public class DebitoFrame {
 		setFrmBancoEdd(new JFrame());
 		getFrmBancoEdd().setTitle("Banco EDD - Nuevo débito");
 		getFrmBancoEdd().setBounds(100, 100, 300, 169);
-		getFrmBancoEdd().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		getFrmBancoEdd().setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		getFrmBancoEdd().getContentPane().setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Ingrese los datos correspondientes");
-		lblNewLabel.setBounds(10, 11, 169, 14);
+		lblNewLabel.setBounds(10, 11, 203, 14);
 		getFrmBancoEdd().getContentPane().add(lblNewLabel);
 		
 		JPanel panel = new JPanel();
@@ -76,21 +77,39 @@ public class DebitoFrame {
 		panel.add(textFieldDNI);
 		
 		JButton btnConfirmar = new JButton("Confirmar");
+		btnConfirmar.setFont(new Font("Montserrat Light", Font.PLAIN, 10));
 		btnConfirmar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					float monto = Float.parseFloat(textFieldMonto.getText());
 					int dni = Integer.parseInt(textFieldDNI.getText());
+					int confirmar = JOptionPane.showConfirmDialog(btnConfirmar, "¿Desea confirmar la transacción?", "Confirmar transaccion", 2);
+					if (confirmar == 0) {
 					logica.debito(monto, dni);
+					frmBancoEdd.dispose();
+					}
+					
 				} catch (TransaccionInvalidaException e1) {
 					JOptionPane.showMessageDialog(btnConfirmar, e1.getMessage(), "Error en la transaccion", 0);
-				} 
+				} catch(NumberFormatException e1){
+					JOptionPane.showMessageDialog(
+							null, "Por favor, solo ingrese numeros", "Datos incorrectos", 0);
+				}
 			}
 		});
 		btnConfirmar.setBounds(85, 98, 89, 23);
 		getFrmBancoEdd().getContentPane().add(btnConfirmar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int confirmar = JOptionPane.showConfirmDialog(btnConfirmar, "¿Desea cancelar la transacción?", "Cancelar transaccion", 2);
+				if (confirmar == 0) {
+				frmBancoEdd.dispose();
+				}
+			}
+		});
+		btnCancelar.setFont(new Font("Montserrat Light", Font.PLAIN, 10));
 		btnCancelar.setBounds(185, 98, 89, 23);
 		frmBancoEdd.getContentPane().add(btnCancelar);
 	}
@@ -101,5 +120,6 @@ public class DebitoFrame {
 
 	public void setFrmBancoEdd(JFrame frmBancoEdd) {
 		this.frmBancoEdd = frmBancoEdd;
+		frmBancoEdd.setResizable(false);
 	}
 }

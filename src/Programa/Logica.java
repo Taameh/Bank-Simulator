@@ -3,11 +3,15 @@ package Programa;
 import java.awt.EventQueue;
 import java.util.Iterator;
 
+import Exceptions.EmptyPriorityQueueException;
+import Exceptions.InvalidKeyException;
 import Exceptions.LogueoInvalidoException;
 import Exceptions.RegistroInvalidoException;
 import Exceptions.SaldoInsuficienteException;
 import Exceptions.TransaccionInvalidaException;
 import GUI.LogInFrame;
+import TDAColaCP.PriorityQueue;
+import TDADiccionario.Entry;
 import TDALista.ListaDoblementeEnlazada;
 import TDALista.PositionList;
 
@@ -21,6 +25,7 @@ public class Logica {
 		setSesionActual(null);
 	}
 	
+
 	/**
 	 * Perimte crear una cuenta nueva y aniadirl al listado de cuentas bancarias
 	 * @param nombre del propietario
@@ -29,7 +34,7 @@ public class Logica {
 	 * @param saldo del propietario
 	 * @throws RegistroInvalidoException si alguno de los campos esta vacio
 	 */
-	public void signIn(String nombre, String apellido, int dni, int saldo) throws RegistroInvalidoException {
+	public void signIn(String nombre, String apellido, int dni, float saldo) throws RegistroInvalidoException {
 		if(!nombre.equals("") && !apellido.equals(""))
 		cuentas.addLast(new CuentaBancaria(nombre, apellido, dni, saldo));
 		else
@@ -64,7 +69,7 @@ public class Logica {
 		try{
 			CuentaBancaria beneficiario = buscarCuenta(dni);
 			if (beneficiario != null) {
-				getSesionActual().debito(monto, beneficiario);
+				sesionActual.debito(monto, beneficiario);
 				beneficiario.credito(monto,getSesionActual()); //Las transferencias se ven reflejadas desde el lado del receptor como un credito
 			}
 			else {
@@ -81,51 +86,56 @@ public class Logica {
 	 * @param dni del emisor
 	 * @throws TransaccionInvalidaException si el emisor es invalido
 	 */
-	public void credito(int monto, int dni) throws TransaccionInvalidaException{ //solo recibe dinero
+	public void credito(float monto, int dni) throws TransaccionInvalidaException{ //solo recibe dinero
+
 		CuentaBancaria emisor = buscarCuenta(dni);
 		if (emisor != null) {
-			getSesionActual().credito(monto,emisor); //Las transferencias se ven reflejadas desde el lado del receptor como un credito		
+			sesionActual.credito(monto,emisor);
 		}
 		else {
 			throw new TransaccionInvalidaException("Emisor invalido");
 		}
 	}
-	
-	/**
-	 * Muestra las ultimas n transacciones en la GUI
-	 * @param n transacciones a mostrar
-	 */
-	public void mostrarUltimasN(int n) {
-		for(Transaccion transaccion : getSesionActual().ultimasN(n)) {
-			//mostrar en gui
-		}
-	}
-	
+
 	/**
 	 * Muestra las transacciones de un mismo valor k
 	 * @param k valor de la transaccion a buscar
+	 * @param k
+	 * @throws InvalidKeyException 
 	 */
-	public void transaccionesValorK(int k) {
-//		Iterable<Entry<Integer, Transaccion>> transacciones = sesionActual.transaccionesMismoValor().findAllK(k);
-//		for(<Entry<Integer, Transaccion>> transaccion : transacciones) {
-			//mostrar en gui
-//		}
-			
+	public PositionList<Transaccion> transaccionesValorK(float k) throws InvalidKeyException {
+		PositionList<Transaccion> toReturn = new ListaDoblementeEnlazada<Transaccion>();
+		try {
+			for(Entry<Float, Transaccion> e : sesionActual.transaccionesMismoValor().findAll(k))
+				toReturn.addFirst(e.getValue());
+		} catch (InvalidKeyException e) {
+			throw new InvalidKeyException ("Ingrese un valor valido");
+		}
+		return toReturn;
 	}
 	
-	/**
-	 * Muestra el historila de transacciones que se realizaron en una fecha especifica
-	 * @param fecha de transacciones a buscar
-	 */
-	public void historialDia(String fecha) {
-		
-	}
-	
+
 	/**
 	 * Busca la cuenta bancaria de la persona perteneciente al dni ingresado
 	 * @param dni de la cuenta a buscar
 	 * @return cuenta bancaria 
 	 */
+
+	public Iterable<Transaccion> nMayores(float f){
+		PositionList<Transaccion> toReturn = new ListaDoblementeEnlazada<Transaccion>();
+		PriorityQueue <Float,Transaccion> todasLasTransacciones = sesionActual.transaccionesPorValor();
+		try {
+			while(!todasLasTransacciones.isEmpty() && todasLasTransacciones.size() > f)
+					todasLasTransacciones.removeMin();
+			while(!todasLasTransacciones.isEmpty())
+				toReturn.addFirst(todasLasTransacciones.removeMin().getValue());
+		} catch (EmptyPriorityQueueException e) {
+			System.out.println("Error en el manejor de la estructura");
+		}
+		return toReturn;
+	}
+	
+
 	private CuentaBancaria buscarCuenta(int dni) {
 		boolean encontre = false;
 		CuentaBancaria toReturn = null;
