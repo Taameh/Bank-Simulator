@@ -17,7 +17,6 @@ public class Main {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		
 		//Iniciar variables
 		Logica logica = new Logica();
 		

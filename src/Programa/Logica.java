@@ -22,12 +22,12 @@ public class Logica {
 	}
 	
 	/**
-	 * 
-	 * @param nombre
-	 * @param apellido
-	 * @param dni
-	 * @param saldo
-	 * @throws RegistroInvalidoException
+	 * Perimte crear una cuenta nueva y aniadirl al listado de cuentas bancarias
+	 * @param nombre del propietario
+	 * @param apellido del priopietario
+	 * @param dni del propietario
+	 * @param saldo del propietario
+	 * @throws RegistroInvalidoException si alguno de los campos esta vacio
 	 */
 	public void signIn(String nombre, String apellido, int dni, int saldo) throws RegistroInvalidoException {
 		if(!nombre.equals("") && !apellido.equals(""))
@@ -37,12 +37,12 @@ public class Logica {
 	}
 	
 	/**
-	 * 
-	 * @param clave
-	 * @param nombre
-	 * @param apellido
-	 * @param dni
-	 * @throws LogueoInvalidoException
+	 * permite el acceso a la manipulacion de la cuenta
+	 * @param clave contrasenia de la cuenta
+	 * @param nombre de la cuenta
+	 * @param apellido de la cuenta
+	 * @param dni de la cuenta
+	 * @throws LogueoInvalidoException si algun dato es incorrecto
 	 */
 	public void logIn(String clave, String nombre, String apellido, int dni) throws LogueoInvalidoException{
 		CuentaBancaria cuenta = buscarCuenta(dni);
@@ -55,9 +55,9 @@ public class Logica {
 
 	
 	/**
-	 * 
-	 * @param monto
-	 * @param dni
+	 * Permite el debito de dinero a una valida
+	 * @param monto a debitar
+	 * @param dni de la cuenta receptora del dinero
 	 * @throws TransaccionInvalidaException
 	 */
 	public void debito(float monto, int dni) throws TransaccionInvalidaException{
@@ -76,10 +76,10 @@ public class Logica {
 	}
 	
 	/**
-	 * 
-	 * @param monto
-	 * @param dni
-	 * @throws TransaccionInvalidaException
+	 * Permite acreditar dinero a una cuenta valida 
+	 * @param monto a acreditar
+	 * @param dni del emisor
+	 * @throws TransaccionInvalidaException si el emisor es invalido
 	 */
 	public void credito(int monto, int dni) throws TransaccionInvalidaException{ //solo recibe dinero
 		CuentaBancaria emisor = buscarCuenta(dni);
@@ -92,8 +92,8 @@ public class Logica {
 	}
 	
 	/**
-	 * 
-	 * @param n
+	 * Muestra las ultimas n transacciones en la GUI
+	 * @param n transacciones a mostrar
 	 */
 	public void mostrarUltimasN(int n) {
 		for(Transaccion transaccion : getSesionActual().ultimasN(n)) {
@@ -102,8 +102,8 @@ public class Logica {
 	}
 	
 	/**
-	 * 
-	 * @param k
+	 * Muestra las transacciones de un mismo valor k
+	 * @param k valor de la transaccion a buscar
 	 */
 	public void transaccionesValorK(int k) {
 //		Iterable<Entry<Integer, Transaccion>> transacciones = sesionActual.transaccionesMismoValor().findAllK(k);
@@ -113,10 +113,19 @@ public class Logica {
 			
 	}
 	
+	/**
+	 * Muestra el historila de transacciones que se realizaron en una fecha especifica
+	 * @param fecha de transacciones a buscar
+	 */
 	public void historialDia(String fecha) {
 		
 	}
 	
+	/**
+	 * Busca la cuenta bancaria de la persona perteneciente al dni ingresado
+	 * @param dni de la cuenta a buscar
+	 * @return cuenta bancaria 
+	 */
 	private CuentaBancaria buscarCuenta(int dni) {
 		boolean encontre = false;
 		CuentaBancaria toReturn = null;
@@ -132,11 +141,17 @@ public class Logica {
 	}
 	
 	
-
+	/**
+	 * 
+	 * @return sesion que fue iniciada anteriormente, returna null en caso de no haber iniciado sesion anteriormente
+	 */
 	public static CuentaBancaria getSesionActual() {
 		return sesionActual;
 	}
-
+	/**
+	 * Asigna la sesion pasa por parametro a la sesion actual
+	 * @param sesionActual 
+	 */
 	public static void setSesionActual(CuentaBancaria sesionActual) {
 		Logica.sesionActual = sesionActual;
 	}

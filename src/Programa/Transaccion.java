@@ -28,10 +28,10 @@ public class Transaccion {
 	//CONSTRUCTOR
 	/**
 	 * inicializa la transaccion con tipo t, monto m, emisor e, receptor r, fecha y hora actual
-	 * @param t
-	 * @param m
-	 * @param e
-	 * @param r
+	 * @param t, tipo de la transacicon
+	 * @param m, monto de la transacicon
+	 * @param e, emisor de la transaccion
+	 * @param r, receptor de la transaccion
 	 */
 	public Transaccion(char t,float m,CuentaBancaria e,CuentaBancaria r) {
 		tipo = t;

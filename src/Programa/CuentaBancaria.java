@@ -142,8 +142,9 @@ public class CuentaBancaria {
 	
 	//SE ASUME QUE EL APELLIDO NO LLEVA X
 	/**
-	 * Verifica si la cadena de String respeta el formato AxA’A’. Donde A es el apellido del usuario, A’ su apellido invertido, y x el carácter ‘x’ 
-	 * @param cadena
+	 * Verifica si la cadena de String respeta el formato AxA’A’. Donde A es el apellido del usuario, A’ su apellido invertido, y x el carácter ‘x’
+	 * se asume que el apellido no lleva x 
+	 * @param cadena a validar
 	 * @return verdadero si la cadena es valida, falso caso contrario
 	 * @throws LogueoInvalidoException si la cadena es invalida
 	 */
@@ -251,8 +252,6 @@ public class CuentaBancaria {
 		historial.addLast(nueva);
 	}
 	
-	//Dictionary transaccionesMismoValor() retorna un diccionario con Entry<Valor, Transaccion>
-	
 	/**
 	 * Devuelve un Diccionario con entradas de un monto y transacciones de un mismo valor
 	 * @return Diccionario de entradas de monto y transaccion
@@ -284,7 +283,7 @@ public class CuentaBancaria {
 	//PositionList<Transaccion> historialDia(int fecha) retorna transacciones de una fecha determinada
 	
 	/**
-	 * Devuelve una lista con aquellas transacicones realizadas en la fecha pasada como parametro
+	 * Devuelve una lista con aquellas transacciones realizadas en la fecha pasada como parametro
 	 * @param fecha
 	 * @return Lista con las transacciones de una fecha determinada
 	 */
