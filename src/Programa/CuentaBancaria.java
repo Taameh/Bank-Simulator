@@ -167,7 +167,7 @@ public class CuentaBancaria {
 		
 		try {
 		
-				while (valido && !col.isEmpty() && col.front() != 'x') {
+				while (valido && !col.isEmpty() && !c2.isEmpty() && col.front() != 'x') {
 					Character aux = col.dequeue();
 					if (aux != c2.dequeue()) 
 						valido = false;
@@ -228,27 +228,23 @@ public class CuentaBancaria {
 	 */
 	public void debito(float monto,CuentaBancaria beneficiario) throws SaldoInsuficienteException {
 
-		System.out.println("saldo previo: " + saldo);
-		
+
 		if (saldo < monto) 
 			throw new SaldoInsuficienteException("No hay saldo suficiente para realizar la operación.");
 		else {
 			saldo = saldo - monto;
 
-			System.out.println("saldo intermedio: " + saldo);
-			
 			Transaccion nueva = new Transaccion('d',monto,this,beneficiario);
 			
-			historial.addLast(nueva);
+			historial.addFirst(nueva);
 		}
 
-		System.out.println("saldo post: " + saldo);
 	}
 	
 	/**
-	 * Se acredita un monto al emisor de la cuenta
+	 * Se acredita un monto a la cuenta
 	 * @param monto a acreditar
-	 * @param emisor
+	 * @param emisor del credito
 	 */
 	public void credito(float monto,CuentaBancaria emisor) {
 		
@@ -256,7 +252,7 @@ public class CuentaBancaria {
 		
 		Transaccion nueva = new Transaccion('c',monto,emisor,this);
 		
-		historial.addLast(nueva);
+		historial.addFirst(nueva);
 	}
 	
 	//Dictionary transaccionesMismoValor() retorna un diccionario con Entry<Valor, Transaccion>
@@ -306,7 +302,7 @@ public class CuentaBancaria {
 		
 		while (it.hasNext()) {
 			x = it.next();
-			if (x.getFecha() == fecha) {
+			if (x.getFecha().equals(fecha)) {
 				nueva.addLast(x);
 			}
 		}
@@ -319,13 +315,13 @@ public class CuentaBancaria {
 	/**
 	 * Devuelve una Lista de transacciones, dichas transacciones deben superar el monto m
 	 * si deb es true, la lista incluye debitos, lo mismo con cred
-	 * @param m cantidad de monto
+	 * @param monto cantidad de monto
 	 * @param deb 
 	 * @param cred
 	 * @return una Lista de transacciones
 	 */
 	
-	public PositionList<Transaccion> transaccionesEncimaDe(int m,boolean deb,boolean cred) {
+	public PositionList<Transaccion> transaccionesEncimaDe(float monto,boolean deb,boolean cred) {
 		
 		PositionList<Transaccion> nueva = new ListaDoblementeEnlazada<Transaccion>();
 		Iterator<Transaccion> it = historial.iterator();
@@ -334,11 +330,11 @@ public class CuentaBancaria {
 		while (it.hasNext()) {
 			
 			x = it.next();
-			if (deb == true  && x.getMonto() > m) {
+			if (deb == true  && x.getMonto() > monto) {
 				if (x.getTipo() == 'd') 
 					nueva.addFirst(x);
 			}else {
-				if (cred == true && x.getMonto() > m) {
+				if (cred == true && x.getMonto() > monto) {
 					if (x.getTipo() == 'c') 
 						nueva.addFirst(x);
 				}

@@ -178,6 +178,9 @@ public class InterfazFrame {
 							        @Override
 							        public void windowClosed(WindowEvent windowEvent) {
 							        	textFieldSaldo.setText(String.valueOf(sesion.getSaldo()));
+							        	limpiarTabla();
+							        	mostrarTabla(sesion.getHistorial());
+							        	comboBoxMostrar.setSelectedIndex(0);
 							        }
 							    });
 							} catch (Exception e) {
@@ -331,7 +334,9 @@ public class InterfazFrame {
 		    }
 		});
 		comboBoxMostrar.setFont(new Font("Montserrat Medium", Font.PLAIN, 11));
-		comboBoxMostrar.setModel(new DefaultComboBoxModel(new String[] {"Mostrar todas", "Mostrar últimas N", "Mostrar N mayor Valor", "Mostrar fecha específica", "Mostrar valor superior a N"}));
+		comboBoxMostrar.setModel(new DefaultComboBoxModel(new String[] {
+				"Mostrar todas", "Mostrar últimas N", "Mostrar N mayor Valor", "Mostrar fecha específica", "Mostrar valor superior a N"}
+		));
 		comboBoxMostrar.setSelectedIndex(0);
 		comboBoxMostrar.setBounds(10, 11, 165, 22);
 		HistoryArea.add(comboBoxMostrar);
@@ -353,12 +358,25 @@ public class InterfazFrame {
 				}
 				else if(comboBoxMostrar.getSelectedIndex() == 2) {
 					//Mostrar N mayor valor
+					//Iterable<Transaccion> transacciones = sesion.transaccionesPorValor(0).it;
+					limpiarTabla();
+					//mostrarTabla(transacciones);
+					JOptionPane.showMessageDialog(null, "Ta mal :("  , "Ta mal el metodo pa", 1);
 				}
+
 				else if(comboBoxMostrar.getSelectedIndex() == 3) {
-					//Mostrar Fecha especifica
+					String fecha = (textFieldDia.getText()+"/"+textFieldMes.getText()+"/"+textFieldAño.getText());
+					Iterable<Transaccion> transacciones = sesion.historialDia(fecha);
+					limpiarTabla();
+					mostrarTabla(transacciones);
+					
 				}
 				else if(comboBoxMostrar.getSelectedIndex() == 4) {
 					//Mostrar Valor Superior a N
+					float monto = Float.parseFloat( textFieldDia.getText());
+					Iterable<Transaccion> transacciones = sesion.transaccionesEncimaDe(monto, chckbxDebito.isSelected(), chckbxCredito.isSelected());
+					limpiarTabla();
+					mostrarTabla(transacciones);
 				}
 			}
 		});
@@ -368,6 +386,18 @@ public class InterfazFrame {
 		
 		
 		JButton btnConfirmar_1 = new JButton("Calcular saldo");
+		btnConfirmar_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int dia = Integer.parseInt( textFieldDia2.getText());
+				int mes = Integer.parseInt( textFieldMes2.getText());
+				int año = Integer.parseInt( textFieldAño2.getText());
+				
+				JOptionPane.showMessageDialog(
+						btnConfirmar_1, 
+						
+						"El saldo el " + dia + "/" + mes + "/" + año + " era de: $" +  sesion.saldoEnFechaEspecifica(dia, mes, año)  , "Saldo en día Especifico", 1);
+			}
+		});
 		btnConfirmar_1.setFont(new Font("Montserrat Medium", Font.PLAIN, 11));
 		btnConfirmar_1.setBounds(10, 461, 120, 23);
 		getFrmBancoEdd().getContentPane().add(btnConfirmar_1);
