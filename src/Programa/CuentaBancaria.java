@@ -9,17 +9,9 @@ import TDAPila.*;
 import TDAColaCP.*;
 
 /**
- * Clase que modela una cuenta bancaria
  * @author Arroyo Tomas (126078) - Fernandez Maximo (131672)
- * @param nombre del propietario de la cuenta
- * @param apellido del propietario de la cuenta
- * @param DNI del propietario de la cuenta
- * @param saldo de la cuenta
- * @param historial de transacciones de la cuenta
  */
 public class CuentaBancaria {
-	
-	//ATRIBUTOS
 	
 	protected String nombre;
 	protected String apellido;
@@ -27,15 +19,13 @@ public class CuentaBancaria {
 	protected float saldo;
 	protected PositionList<Transaccion> historial;
 	
-	// CONSTRUCTOR
-	
 
 	/**
 	 * inicializa el nombre, apellido, DNI, saldo, historial seteandolos
-	 * @param n
-	 * @param a
-	 * @param d
-	 * @param s
+	 * @param n nombre del propietario de la cuenta
+	 * @param a apellido del propietario de la cuenta
+	 * @param d dni del propietario de la cuenta
+	 * @param s saldo del propietario de la cuenta
 	 */
 	public CuentaBancaria(String n,String a,int d,float s) {
 
@@ -48,32 +38,32 @@ public class CuentaBancaria {
 	
 	
 	/**
-	 * Consulta el nombre del duenio de la CuentaBancaria
-	 * @return Nombre del duenio de la cuenta
+	 * Consulta el nombre del propietario de la CuentaBancaria
+	 * @return Nombre del propietario de la cuenta
 	 **/
 	public String getNombre() {
 		return nombre;
 	}
 	
 	/**
-	 * asigna el nombre del duenio de la CuentaBancaria
-	 * @param nombre
+	 * asigna el nombre del propietario de la CuentaBancaria
+	 * @param nombre ingresado
 	 **/
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 	
 	/**
-	 * Consulta el apellido del duenio de la CuentaBancaria
-	 * @return Apellido del duenio de la cuenta
+	 * Consulta el apellido del propietario de la CuentaBancaria
+	 * @return Apellido del propietario de la cuenta
 	 **/
 	public String getApellido() {
 		return apellido;
 	}
 	
 	/**
-	 * Setea el apellido del duenio de la CuentaBancaria
-	 * @param apellido
+	 * Setea el apellido del propietario de la CuentaBancaria
+	 * @param apellido ingresado
 	 **/
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
@@ -81,23 +71,23 @@ public class CuentaBancaria {
 	
 	/**
 	 * Consulta el apellido del duenio de la CuentaBancaria
-	 * @return Apellido del duenio de la cuenta
+	 * @return Apellido del propietario de la cuenta
 	 **/
 	public int getDNI() {
 		return DNI;
 	}
 	
 	/**
-	 * Setea el apellido del duenio de la CuentaBancaria
-	 * @param dNI
+	 * Setea el apellido del propietario de la CuentaBancaria
+	 * @param dNI ingresado
 	 **/
 	public void setDNI(int dNI) {
 		DNI = dNI;
 	}
 	
 	/**
-	 * Consulta el Saldo del duenio de la CuentaBancaria
-	 * @return Saldo del duenio de la cuenta
+	 * Consulta el Saldo del propietario de la CuentaBancaria
+	 * @return Saldo del propietario de la cuenta
 	 **/
 	public float getSaldo() {
 		return saldo;
@@ -105,7 +95,7 @@ public class CuentaBancaria {
 	
 	/**
 	 * Setea el apellido del duenio de la CuentaBancaria
-	 * @param saldo
+	 * @param saldo ingresado
 	 **/
 	public void setSaldo(float saldo) {
 		this.saldo = saldo;
@@ -121,8 +111,8 @@ public class CuentaBancaria {
 	
 	/**
 	 * Inserta una cadena String en una cola
-	 * @param s
-	 * @param cola
+	 * @param s cadena a insertar
+	 * @param cola donde encolar la cadena
 	 */
 	public static void insertarCadenaCola(String s,Queue<Character> cola) {
 		for (int i = 0; i < s.length(); i++) {
@@ -132,8 +122,8 @@ public class CuentaBancaria {
 	
 	/**
 	 * inserta una cadena String en una pila
-	 * @param s
-	 * @param pila
+	 * @param s cadena a insertar
+	 * @param pila donde pushear la cadena
 	 */
 	public static void insertarCadenaPila(String s,Stack<Character> pila) {
 		for (int i = 0; i < s.length(); i++) {
@@ -288,7 +278,7 @@ public class CuentaBancaria {
 	
 	/**
 	 * Devuelve una lista con aquellas transacciones realizadas en la fecha pasada como parametro
-	 * @param fecha
+	 * @param fecha especificada
 	 * @return Lista con las transacciones de una fecha determinada
 	 */
 	
@@ -315,8 +305,8 @@ public class CuentaBancaria {
 	 * Devuelve una Lista de transacciones, dichas transacciones deben superar el monto m
 	 * si deb es true, la lista incluye debitos, lo mismo con cred
 	 * @param monto cantidad de monto
-	 * @param deb 
-	 * @param cred
+	 * @param deb si es de tipi debito
+	 * @param cred si es de tipo debito 
 	 * @return una Lista de transacciones
 	 */
 	
@@ -345,10 +335,8 @@ public class CuentaBancaria {
 	}
 	
 	/**
-	 * Devuelve una colaConPrioridad de las n transacciones de mayor valor, si n es menor a la cantidad de transacciones,
-	 * devuelve todas las transacciones realizadas
-	 * @param n
-	 * @return ColaCPHeap
+	 * Devuelve una ColaCPHeap de las transacciones todas las transacciones realizadas
+	 * @return ColaCPHeap con las transacciones realizadas  
 	 */
 	public PriorityQueue<Float,Transaccion> transaccionesPorValor(){
 		
@@ -371,31 +359,31 @@ public class CuentaBancaria {
 	
 	/**
 	 * Devuelve el saldo de la cuenta correspondiente a el final de una fecha especifica
-	 * @param dia
-	 * @param mes
-	 * @param año
-	 * @return saldo al inicio del dia
+	 * @param dia especificado
+	 * @param mes especificado
+	 * @param anio especificado
+	 * @return saldo en la fecha especificada
 	 */
-	public float saldoEnFechaEspecifica(int dia, int mes, int año) {
+	public float saldoEnFechaEspecifica(int dia, int mes, int anio) {
 		float toReturn = saldo;
 		boolean corte = false;
 		Iterator<Transaccion> transacciones = historial.iterator();
 		
 		while (!corte && transacciones.hasNext()) {
 			Transaccion t = transacciones.next();
-			if (t.getAño() > año) {
+			if (t.getAnio() > anio) {
 				if (t.getTipo() == 'c')
 					toReturn = toReturn - t.getMonto();
 				else if (t.getTipo() == 'd')
 					toReturn = toReturn + t.getMonto();
 			}
-			else if (t.getAño() == año && t.getMes() > mes) {
+			else if (t.getAnio() == anio && t.getMes() > mes) {
 				if (t.getTipo() == 'c')
 					toReturn = toReturn - t.getMonto();
 				else if (t.getTipo() == 'd')
 					toReturn = toReturn + t.getMonto();
 			}
-			else if (t.getAño() == año && t.getMes() == mes && t.getDia() > dia) {
+			else if (t.getAnio() == anio && t.getMes() == mes && t.getDia() > dia) {
 				if (t.getTipo() == 'c')
 					toReturn = toReturn - t.getMonto();
 				else if (t.getTipo() == 'd')

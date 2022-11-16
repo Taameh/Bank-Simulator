@@ -7,6 +7,14 @@ import Exceptions.InvalidKeyException;
 import Exceptions.InvalidPositionException;
 import TDALista.*;
 
+/**
+ * Clase DiccionarioHashAbierto 
+ * implementa un diccionario utilizando una tabla de hash abierta
+ * @author Maxi Fernandez - Tomas Arroyo
+ *
+ * @param <K> representa la clave
+ * @param <V> representa el valor
+ */
 public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 	
 	protected PositionList<Entrada<K,V>> [] buckets;
@@ -14,6 +22,9 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 	protected int N; //TAMANIO DEL ARREGLO
 	protected static final float factor = 0.5f;
 	
+	/**
+	 * Crea una nueva instancia de DiccionarioHashAbierto vacia
+	 */
 	@SuppressWarnings("unchecked")
 	public DiccionarioHashAbierto() {
 		N = 11;
@@ -34,17 +45,18 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 		return n == 0;
 	}
 	
+	/**
+	 * Funcion Hash. Computa el valor de la Key
+	 * @param key clave a aplicarle hash
+	 * @return valor resultante de aplicarle hash a la key
+	 * @throws InvalidKeyException si la key es nula
+	 */
 	private int hashThisKey(K key) throws InvalidKeyException {
 		if (key == null) throw new InvalidKeyException("ERROR, UNA CLAVE NULA NO CORRESPONDE");
 		return key.hashCode()%N;
 	}
 
-	/**
-	 * Busca una entrada con clave igual a una clave dada y la devuelve, si no existe retorna nulo.
-	 * @param key Clave a buscar.
-	 * @return Entrada encontrada.
-	 * @throws InvalidKeyException si la clave pasada por par�metro es inv�lida.
-	 */
+
 	public Entry<K, V> find(K key) throws InvalidKeyException {
 		
 		if (key == null)
@@ -141,6 +153,10 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 		return it;
 	}
 	
+	/**
+	 * Redimensionar. crea un nuevo diccionario de mayor tamanio que el original
+	 * e inserta en el todas las entradas del diccionario original
+	 */
 	@SuppressWarnings("unchecked")
 	private void rehash() {
 		Iterable<Entry<K, V>> entries = entries();
@@ -157,7 +173,13 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 			}
 
 	}
-
+	
+	/**
+	 * Consulta si el siguiente de n es primo
+	 * @param n numero a consultar
+	 * @return retorna el siguiente primo del numero pasado por parametro 
+	 * o retorna el numero pasado por parametro en caso de que sea primo
+	 */
 	private int sigPrimo(int n) {
 		boolean es = false;
 		n++;
@@ -170,7 +192,12 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 		}
 		return n;
 	}
-
+	
+	/**
+	 * Consulta si el nuemero pasado por parametro es primo
+	 * @param n numero a consultar
+	 * @return retorna verdadero si el numero pasado por parametro es primo, falso caso contrario
+	 */
 	private boolean esPrimo(int n) {
 		boolean es = false;
 		int divisor = 2;

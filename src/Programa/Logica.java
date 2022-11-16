@@ -15,11 +15,17 @@ import TDADiccionario.Entry;
 import TDALista.ListaDoblementeEnlazada;
 import TDALista.PositionList;
 
+/**
+ * @author Arroyo Tomas (126078) - Fernandez Maximo (131672)
+ *
+ */
 public class Logica {
 	private static PositionList<CuentaBancaria> cuentas;
 	private static CuentaBancaria sesionActual;
 
-	
+	/**
+	 * Crea una cuenta bancaria
+	 */
 	public Logica() {
 		cuentas = new ListaDoblementeEnlazada<CuentaBancaria>();
 		setSesionActual(null);
@@ -63,7 +69,7 @@ public class Logica {
 	 * Permite el debito de dinero a una valida
 	 * @param monto a debitar
 	 * @param dni de la cuenta receptora del dinero
-	 * @throws TransaccionInvalidaException
+	 * @throws TransaccionInvalidaException si el beneficiario es invalido
 	 */
 	public void debito(float monto, int dni) throws TransaccionInvalidaException{
 		try{
@@ -100,8 +106,8 @@ public class Logica {
 	/**
 	 * Muestra las transacciones de un mismo valor k
 	 * @param k valor de la transaccion a buscar
-	 * @param k
-	 * @throws InvalidKeyException 
+	 * @throws InvalidKeyException si el valor es invalido
+	 * @return lista con transacciones de valor k
 	 */
 	public PositionList<Transaccion> transaccionesValorK(float k) throws InvalidKeyException {
 		PositionList<Transaccion> toReturn = new ListaDoblementeEnlazada<Transaccion>();
@@ -116,9 +122,9 @@ public class Logica {
 	
 
 	/**
-	 * Busca la cuenta bancaria de la persona perteneciente al dni ingresado
-	 * @param dni de la cuenta a buscar
-	 * @return cuenta bancaria 
+	 * Devuelve una lista iterable con f transacciones con mayor valor
+	 * @param f numero de transacciones a insertar
+	 * @return Retorna una lista con n transaccionnes mayores que f
 	 */
 
 	public Iterable<Transaccion> nMayores(float f){
@@ -135,7 +141,11 @@ public class Logica {
 		return toReturn;
 	}
 	
-
+	/**
+	 * Busca la cuenta bancaria de la persona perteneciente al dni ingresado
+	 * @param dni de la cuenta a buscar
+	 * @return cuenta bancaria asociada al dni pasado por parametro
+	 */
 	private CuentaBancaria buscarCuenta(int dni) {
 		boolean encontre = false;
 		CuentaBancaria toReturn = null;
@@ -152,15 +162,15 @@ public class Logica {
 	
 	
 	/**
-	 * 
+	 * Devuelve la sesion iniciada anteriormente
 	 * @return sesion que fue iniciada anteriormente, returna null en caso de no haber iniciado sesion anteriormente
 	 */
 	public static CuentaBancaria getSesionActual() {
 		return sesionActual;
 	}
 	/**
-	 * Asigna la sesion pasa por parametro a la sesion actual
-	 * @param sesionActual 
+	 * Asigna la sesion pasada por parametro a la sesion actual
+	 * @param sesionActual sesion actual
 	 */
 	public static void setSesionActual(CuentaBancaria sesionActual) {
 		Logica.sesionActual = sesionActual;

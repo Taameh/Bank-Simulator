@@ -5,12 +5,20 @@ import java.util.Comparator;
 import Exceptions.EmptyPriorityQueueException;
 import Exceptions.InvalidKeyException;
 
+/**
+ * clase ColaCPHeap
+ * Almacena elementos tipo clave - valor
+ * @authors Maxi Fernandez y Tomas Arroyo
+ * @param <K> tipo de dato de la clave 
+ * @param <V> tipo de dato del valor
+ */
 public class ColaCPHeap<K extends Comparable<K>,V> implements PriorityQueue<K,V> {
+	
 	protected Entry<K,V>[] queue;
 	protected int size;
 	protected Comparator<K> comparator;
 	
-	
+
 	@SuppressWarnings("hiding")
 	private class Entrada<K,V> implements Entry<K,V> { //clase anidada
 		private K clave;
@@ -32,6 +40,9 @@ public class ColaCPHeap<K extends Comparable<K>,V> implements PriorityQueue<K,V>
 		
 	}
 	
+	/**
+	 * Crea una nueva instancia de ColaCPHeap vacia
+	 */
 	@SuppressWarnings("unchecked")
 	public ColaCPHeap() {
 		queue = (Entrada<K,V>[]) new Entrada[12];
@@ -67,7 +78,8 @@ public class ColaCPHeap<K extends Comparable<K>,V> implements PriorityQueue<K,V>
 		ordenar(size,size/2);
 		return newEntry;
 	}
-
+	
+	
 	@SuppressWarnings("unchecked")
 	private void redimensionar() {
 		Entry<K,V>[] aux = queue;
@@ -100,7 +112,8 @@ public class ColaCPHeap<K extends Comparable<K>,V> implements PriorityQueue<K,V>
 		acomodar(1);
 		return toReturn;
 	}
-
+	
+	
 	private void acomodar(int i) {
 		int izq = i*2;
 		int der = i*2 + 1;

@@ -5,7 +5,13 @@ import java.util.Comparator;
 import Exceptions.EmptyPriorityQueueException;
 import Exceptions.InvalidKeyException;
 
-
+/**
+ * Clase Heap
+ * @author Maxi Fernandez - Tomas Arroyo
+ *
+ * @param <K> representa la clave
+ * @param <V> representa el valor
+ */
 public class Heap<K extends Comparable<K>,V> implements PriorityQueue<K,V> {
 	
 	protected Entrada<K,V>[] elems;

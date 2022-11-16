@@ -2,13 +2,21 @@ package TDACola;
 
 import Exceptions.EmptyQueueException;
 
+/**
+ * clase ColaConArregloCircular
+ * implementa los datos y operaciones aplicables sobre una cola con arreglo circular
+ * @authors Maxi Fernanrdez y Tomas Arroyo
+ * @param <E>
+ */
 public class ColaConArregloCircular <E> implements Queue<E>{
 	
 	private int head;
 	private int tail;
 	private E[] queue;
 
-
+	/**
+	 * crea una nueva Cola vacia
+	 */
 	public ColaConArregloCircular() {
 		head = 0;
 		tail = 0;

@@ -6,12 +6,22 @@ import Exceptions.BoundaryViolationException;
 import Exceptions.EmptyListException;
 import Exceptions.InvalidPositionException;
 
+/**
+ * Clase ListaDoblementeEnlaza
+ * Modela a la interfaz PositionList
+ * @author Maxi Fernandez - Tomas Arroyo
+ *
+ * @param <E> tipo del elemento
+ */
 public class ListaDoblementeEnlazada<E> implements PositionList<E> {
 
 	protected DNodo<E> trailer;
 	protected DNodo<E> header;
 	protected int tamanio;
 	
+	/**
+	 * Crea una nueva instancia de listaDoblementeEnlazada vacia 
+	 */
 	public ListaDoblementeEnlazada() {
 		header = new DNodo<E>(null);
 		trailer = new DNodo<E>(null);
@@ -62,6 +72,12 @@ public class ListaDoblementeEnlazada<E> implements PositionList<E> {
 		return n.getNext();
 	}
 	
+	/**
+	 * Verifica que la posicion pasada por parametro sea valida
+	 * @param p posicion a consultar 
+	 * @return DNodo asociado a la posicion p 
+	 * @throws InvalidPositionException Si la posicion es invalida, o si es nula
+	 */
 	private DNodo<E> checkPosition(Position<E> p) throws InvalidPositionException{
 		DNodo<E> retorno = null;
 		try {

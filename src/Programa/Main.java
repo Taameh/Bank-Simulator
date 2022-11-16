@@ -14,13 +14,12 @@ import TDALista.ListaDoblementeEnlazada;
 public class Main {
 
 	/**
-	 * Launch the application.
+	 * Lanza la aplicacion
+	 * @param args lanza la aplicacion
 	 */
 	public static void main(String[] args) {
-		//Iniciar variables
 		Logica logica = new Logica();
 		
-		//Iniciar ventana de logueo
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {

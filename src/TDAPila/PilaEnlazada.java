@@ -2,10 +2,24 @@ package TDAPila;
 
 import Exceptions.EmptyStackException;
 
-
+/**
+ * Clase PilaEnlaza
+ * Modela la interfaz Stack
+ * @author Maxi Fernandez - Tomas Arroyo
+ *	
+ * @param <E> tipo del elemento
+ */
 public class PilaEnlazada<E> implements Stack<E>{
 	private Nodo<E> top;
 	private int size = 0;
+	
+	/**
+	 * Crea una instancia de PilaEnlaza vacia
+	 */
+	public PilaEnlazada() {
+		top = null;
+		size = 0;
+	}
 	
 	
 	@Override

@@ -6,17 +6,8 @@ import java.util.Date;
 /**
  * 
  * @author Arroyo Tomas (126078) - Fernandez Maximo (131672)
- * @param tipo
- * @param monto 
- * @param fecha
- * @param hora
- * @param emisor
- * @param receptor
- * @version 
  */
 public class Transaccion {
-	
-	// ATRIBUTOS
 	
 	protected char tipo;
 	protected float monto;
@@ -28,10 +19,10 @@ public class Transaccion {
 	//CONSTRUCTOR
 	/**
 	 * inicializa la transaccion con tipo t, monto m, emisor e, receptor r, fecha y hora actual
-	 * @param t, tipo de la transacicon
-	 * @param m, monto de la transacicon
-	 * @param e, emisor de la transaccion
-	 * @param r, receptor de la transaccion
+	 * @param t tipo de la transacicon
+	 * @param m monto de la transacicon
+	 * @param e emisor de la transaccion
+	 * @param r receptor de la transaccion
 	 */
 	public Transaccion(char t,float m,CuentaBancaria e,CuentaBancaria r) {
 		tipo = t;
@@ -47,7 +38,6 @@ public class Transaccion {
 		
 	}
 	
-	// METODOS
 	
 	/**
 	 * Devuelve el dia en que se realizo la transaccion
@@ -60,7 +50,7 @@ public class Transaccion {
 	
 	/**
 	 * Devuelve el mes en que se realizo la transaccion
-	 * @return mes
+	 * @return mes en que se realizo la transaccion
 	 */
 	public int getMes() {
 		int toReturn = (Character.getNumericValue(fecha.charAt(3)) * 10 + Character.getNumericValue(fecha.charAt(4)) );
@@ -69,9 +59,9 @@ public class Transaccion {
 	
 	/**
 	 * Devuelve el anio en que se realizo la transaccion
-	 * @return anio
+	 * @return anio en que se realizo la transaccion
 	 */
-	public int getAño() {
+	public int getAnio() {
 		int toReturn = (Character.getNumericValue(fecha.charAt(6)) * 1000 + Character.getNumericValue(fecha.charAt(7)) * 100 + Character.getNumericValue(fecha.charAt(8)) *10 + Character.getNumericValue(fecha.charAt(9)) );
 		return toReturn;
 	}

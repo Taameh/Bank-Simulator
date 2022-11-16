@@ -6,6 +6,12 @@ import Exceptions.BoundaryViolationException;
 import Exceptions.EmptyListException;
 import Exceptions.InvalidPositionException;
 
+/**
+ * Clase ElmenetIterator
+ * Implementa los metodos de la interfaz Iterator
+ * @author Maxi Fernanadez - Tomas Arroyo
+ * @param <E> tipo del elemento
+ */
 //UTILIZO LA INTERFACE ITERATOR QUE PROVEE JAVA
 public class ElementIterator<E> implements Iterator<E> {
 
