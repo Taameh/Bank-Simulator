@@ -1,5 +1,6 @@
 package TDAPila;
 
+import Auxiliares.Nodo;
 import Exceptions.EmptyStackException;
 
 /**

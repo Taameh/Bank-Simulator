@@ -1,4 +1,4 @@
-package TDALista;
+package Auxiliares;
 
 /**
  * Clase DNodo

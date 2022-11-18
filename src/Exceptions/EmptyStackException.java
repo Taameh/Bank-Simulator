@@ -1,8 +1,9 @@
 package Exceptions;
 
 /**
- * 
- * @author MaxiC
+ * Clase EmptyStackException
+ * Excepcion que se modela cuando una pila esta vacia
+ * @author Maxi Fernandez - Tomas Arroyo
  *
  */
 public class EmptyStackException extends Exception{

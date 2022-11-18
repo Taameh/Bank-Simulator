@@ -1,8 +1,9 @@
 package Exceptions;
 
 /**
- * 
- * @author MaxiC
+ * Clase RegistroInvalidoException
+ * Excepcio que modela cuando los datos para registrarte son invalidos
+ * @author Maxi Fernandez - Tomas Arroyo
  *
  */
 @SuppressWarnings("serial")

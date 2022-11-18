@@ -1,5 +1,6 @@
 package TDADiccionario;
 
+import Auxiliares.Entry;
 import Exceptions.InvalidEntryException;
 import Exceptions.InvalidKeyException;
 

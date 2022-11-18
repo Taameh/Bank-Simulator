@@ -1,8 +1,9 @@
 package Exceptions;
 
 /**
- * 
- * @author MaxiC
+ * Clase InvalidPositionException
+ * Excepcion que se modela cuando una posicion es invalida
+ * @author Maxi Fernandez - Tomas Arroyo
  *
  */
 @SuppressWarnings("serial")

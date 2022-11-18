@@ -1,9 +1,9 @@
 package Exceptions;
 
 /**
- * 
- * @author MaxiC
- *
+ * Clase InvalidKeyException
+ * Excepcion que se modela cuando una clave es invalida
+ * @author Maxi Fernandez - Tomas Arroyo
  */
 public class InvalidKeyException extends Exception{
 	

@@ -5,6 +5,8 @@ import java.util.Iterator;
 import Exceptions.BoundaryViolationException;
 import Exceptions.EmptyListException;
 import Exceptions.InvalidPositionException;
+import Auxiliares.DNodo;
+import Auxiliares.Position;
 
 /**
  * Clase ListaDoblementeEnlaza

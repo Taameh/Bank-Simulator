@@ -1,10 +1,13 @@
 package Exceptions;
 
 /**
- * 
- * @author MaxiC
+ * Clase TransaccionInvalidaException
+ * Excepcion que modela cuando una transaccion es invalida
+ * @author Maxi Fernandez - Tomas Arroyo
  *
  */
+@SuppressWarnings("serial")
+
 public class TransaccionInvalidaException extends Exception {
 	
 	/**

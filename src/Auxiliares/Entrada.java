@@ -1,4 +1,4 @@
-package TDADiccionario;
+package Auxiliares;
 
 /**
  * Clase Entrada 

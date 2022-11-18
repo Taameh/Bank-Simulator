@@ -2,7 +2,7 @@ package Exceptions;
 
 /**
  * Clase BoundaryViolationException
- * Excepcion a utilizarse cuando se excede el limite de una estructura
+ * Excepcion que se modela cuando se excede el limite de una estructura
  * @author Maxi Fernandez - Tomas Arroyo
  *
  */

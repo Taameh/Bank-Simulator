@@ -2,6 +2,7 @@ package TDAColaCP;
 
 import java.util.Comparator;
 
+import Auxiliares.Entry;
 import Exceptions.EmptyPriorityQueueException;
 import Exceptions.InvalidKeyException;
 

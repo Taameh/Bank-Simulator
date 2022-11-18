@@ -2,8 +2,9 @@ package Exceptions;
 
 
 /**
- * 
- * @author MaxiC
+ * Clase EmptyQueueException
+ * Excepcion que se modela caundo una cola esta vacia
+ * @author Maxi Fernandez - Tomas Arroyo
  *
  */
 public class EmptyQueueException extends Exception{

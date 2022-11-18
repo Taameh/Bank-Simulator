@@ -2,6 +2,7 @@ package TDALista;
 
 import java.util.Iterator;
 
+import Auxiliares.Position;
 import Exceptions.BoundaryViolationException;
 import Exceptions.EmptyListException;
 import Exceptions.InvalidPositionException;

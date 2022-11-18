@@ -3,6 +3,7 @@ package Programa;
 import java.awt.EventQueue;
 import java.util.Iterator;
 
+import Auxiliares.Entry;
 import Exceptions.EmptyPriorityQueueException;
 import Exceptions.InvalidKeyException;
 import Exceptions.LogueoInvalidoException;
@@ -11,7 +12,6 @@ import Exceptions.SaldoInsuficienteException;
 import Exceptions.TransaccionInvalidaException;
 import GUI.LogInFrame;
 import TDAColaCP.PriorityQueue;
-import TDADiccionario.Entry;
 import TDALista.ListaDoblementeEnlazada;
 import TDALista.PositionList;
 

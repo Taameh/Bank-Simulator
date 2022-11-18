@@ -1,8 +1,9 @@
 package Exceptions;
 
 /**
- * 
- * @author MaxiC
+ * Clase LogueInvalidoException
+ * Exceppcion que se modela cuando el logueo es invalido
+ * @author Maxi Fernandez - Tomas Arroyo
  *
  */
 public class LogueoInvalidoException extends Exception {

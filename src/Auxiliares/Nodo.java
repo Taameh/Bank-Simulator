@@ -1,4 +1,4 @@
-package TDAPila;
+package Auxiliares;
 
 /**
  * Clase Nodo

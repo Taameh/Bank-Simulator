@@ -6,6 +6,9 @@ import Exceptions.InvalidEntryException;
 import Exceptions.InvalidKeyException;
 import Exceptions.InvalidPositionException;
 import TDALista.*;
+import Auxiliares.Entrada;
+import Auxiliares.Entry;
+import Auxiliares.Position;
 
 /**
  * Clase DiccionarioHashAbierto 
