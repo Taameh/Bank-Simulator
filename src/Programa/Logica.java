@@ -24,7 +24,7 @@ public class Logica {
 	private static CuentaBancaria sesionActual;
 
 	/**
-	 * Crea una cuenta bancaria
+	 * Crea una instancia de  cuenta bancaria
 	 */
 	public Logica() {
 		cuentas = new ListaDoblementeEnlazada<CuentaBancaria>();

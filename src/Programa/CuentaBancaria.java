@@ -70,8 +70,8 @@ public class CuentaBancaria {
 	}
 	
 	/**
-	 * Consulta el apellido del duenio de la CuentaBancaria
-	 * @return Apellido del propietario de la cuenta
+	 * Consulta el DNI del duenio de la CuentaBancaria
+	 * @return DNI del propietario de la cuenta
 	 **/
 	public int getDNI() {
 		return DNI;
@@ -94,7 +94,7 @@ public class CuentaBancaria {
 	}
 	
 	/**
-	 * Setea el apellido del duenio de la CuentaBancaria
+	 * Setea el SALDO del duenio de la CuentaBancaria
 	 * @param saldo ingresado
 	 **/
 	public void setSaldo(float saldo) {
@@ -340,7 +340,7 @@ public class CuentaBancaria {
 	 */
 	public PriorityQueue<Float,Transaccion> transaccionesPorValor(){
 		
-		PriorityQueue<Float,Transaccion> nueva = new ColaCPHeap<Float,Transaccion>();
+		PriorityQueue<Float,Transaccion> nueva = new HeapPQueue<Float,Transaccion>();
 		Iterator<Transaccion> it = historial.iterator();
 		Transaccion x;
 		

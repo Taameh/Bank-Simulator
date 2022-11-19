@@ -1,8 +1,7 @@
 package TDAColaCP;
 
 import Auxiliares.Entry;
-import Exceptions.EmptyPriorityQueueException;
-import Exceptions.InvalidKeyException;
+import Exceptions.*;
 
 /**
  * Interface PriorityQueue
