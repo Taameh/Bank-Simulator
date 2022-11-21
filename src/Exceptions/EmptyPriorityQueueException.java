@@ -12,8 +12,8 @@ public class EmptyPriorityQueueException extends Exception{
 	 * Crea una nueva excepcion 
 	 * @param msj mensaje de error
 	 */
-	public EmptyPriorityQueueException(String msg) {
-		super(msg);
+	public EmptyPriorityQueueException(String msj) {
+		super(msj);
 	}
 
 }

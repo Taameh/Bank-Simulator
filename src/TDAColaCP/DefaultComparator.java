@@ -4,7 +4,7 @@ package TDAColaCP;
  * Clase Default_Comparator
  * @author Maxi Fernandez - Tomas Arroyo
  *
- * @param <K>
+ * @param <E> tipo generico
  */
 public class DefaultComparator<E> implements java.util.Comparator<E> {
 

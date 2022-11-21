@@ -14,7 +14,7 @@ public class InvalidKeyException extends Exception{
 	 * @param msj mensaje de error
 	 */	
 	
-	public InvalidKeyException(String msg){
-		super(msg);
+	public InvalidKeyException(String msj){
+		super(msj);
 	}
 }

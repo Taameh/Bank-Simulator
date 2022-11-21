@@ -5,8 +5,8 @@ import Exceptions.EmptyQueueException;
 /**
  * clase ColaConArregloCircular
  * implementa los datos y operaciones aplicables sobre una cola con arreglo circular
- * @authors Maxi Fernanrdez y Tomas Arroyo
- * @param <E>
+ * @author Maxi Fernanrdez - Tomas Arroyo
+ * @param <E> tipo generico
  */
 public class ColaConArregloCircular <E> implements Queue<E>{
 	

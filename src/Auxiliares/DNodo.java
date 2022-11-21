@@ -63,14 +63,18 @@ public class DNodo<E> implements Position<E> {
 
 	/**
 	 * Setea el DNodo pasado por parametro como DNodo siguiente
-	 * @param ant DNodo a setear como siguiente al DNodo que recibe el mensaje
+	 * @param sig DNodo a setear como siguiente al DNodo que recibe el mensaje
 	 */
 	public void setNext(DNodo<E> sig) {
 		this.next = sig;
 	}
-
-	public void setElement(E element) {
-		this.element = element;
+	
+	/**
+	 * Setea element al elemento pasado por parametro
+	 * @param elem pasado por parametro
+	 */
+	public void setElement(E elem) {
+		this.element = elem;
 	}
 	
 	
