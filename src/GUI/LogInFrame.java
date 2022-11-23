@@ -11,8 +11,7 @@ import javax.swing.JTextPane;
 import java.awt.Font;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import Exceptions.LogueoInvalidoException;
-import Exceptions.RegistroInvalidoException;
+
 import Programa.Logica;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -141,22 +140,25 @@ public class LogInFrame {
 						String apellido = textFieldApellido.getText();
 						int dni = Integer.parseInt(textFieldDNI.getText());
 						String clave = textFieldClave.getText();
-						logica.logIn(clave, nombre, apellido, dni);
-						//Lanzo ventana de interfaz
-						EventQueue.invokeLater(new Runnable() {
-							public void run() {
-								try {
-									InterfazFrame window = new InterfazFrame(logica);
-									window.getFrmBancoEdd().setVisible(true);
-									
-								} catch (Exception e) {
-									e.printStackTrace();
+						if (!logica.logIn(clave, nombre, apellido, dni)) {
+							JOptionPane.showMessageDialog(null, "Datos ingresados incorrectos", "Logueo Invalido", 0);
+						}else {
+							//Lanzo ventana de interfaz
+							EventQueue.invokeLater(new Runnable() {
+								public void run() {
+									try {
+										InterfazFrame window = new InterfazFrame(logica);
+										window.getFrmBancoEdd().setVisible(true);
+										
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
 								}
-							}
-						});
-						//Cierro ventana de LogIn
-						frmBancoeddInicio.dispose();
-					} catch (LogueoInvalidoException | NumberFormatException e1) {
+							});
+							//Cierro ventana de LogIn
+							frmBancoeddInicio.dispose();
+						}
+					} catch (NumberFormatException e1) {
 						JOptionPane.showMessageDialog(null, "Datos ingresados incorrectos", "Logueo Invalido", 0);
 					}
 				}
@@ -174,7 +176,7 @@ public class LogInFrame {
 							logica.signIn(nombre, apellido, dni, monto);
 							JOptionPane.showMessageDialog(null, "Cuenta creada exitosamente", "Registro valido", 1);
 						}
-						catch(RegistroInvalidoException | NumberFormatException e1) {
+						catch(NumberFormatException e1) {
 							JOptionPane.showMessageDialog(null, "Datos ingresados incorrectos", "Registro Invalido", 0);
 						}
 				}

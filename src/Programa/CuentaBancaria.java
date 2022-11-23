@@ -138,58 +138,48 @@ public class CuentaBancaria {
 	 * se asume que el apellido no lleva x 
 	 * @param cadena a validar
 	 * @return verdadero si la cadena es valida, falso caso contrario
-	 * @throws LogueoInvalidoException si la cadena es invalida
 	 */
-	public boolean validarCadena(String cadena) throws LogueoInvalidoException {
+	public boolean validarCadena(String cadena){
 		
 		
-		boolean valido = true;
+		boolean valida = true;
 		
-		Queue<Character> col = new ColaConArregloCircular<Character>();
-		insertarCadenaCola(cadena,col);
+		Queue<Character> q = new ColaConArregloCircular<Character>();
+		insertarCadenaCola(cadena,q);
 		
-		Stack<Character> s = new PilaEnlazada<Character>();
-		Stack<Character> s2 = new PilaEnlazada<Character>();
-		Queue<Character> c2 = new ColaConArregloCircular<Character>();
-		
-		insertarCadenaPila(getApellido(),s);
-		insertarCadenaPila(getApellido(),s2);
-		insertarCadenaCola(getApellido(),c2);
-		
+
+		Stack<Character> pilaAux1= new PilaEnlazada<Character>();
+		Stack<Character> pilaAux2= new PilaEnlazada<Character>();
+		int tamanioOriginal = q.size();
 		try {
-		
-				while (valido && !col.isEmpty() && !c2.isEmpty() && col.front() != 'x') {
-					Character aux = col.dequeue();
-					if (aux != c2.dequeue()) 
-						valido = false;
-				}
-				
-				if (valido && !col.isEmpty() && col.front() == 'x')
-					col.dequeue();
-				else 
-					valido = false;
-				
-				while (valido && !col.isEmpty() && !s.isEmpty()) {
-					if (s.pop() != col.dequeue()) 
-						valido = false;
-				}
-				
-				while (valido && !col.isEmpty() && !s2.isEmpty()) {
-					if (s2.pop() != col.dequeue()) 
-						valido = false;
-					
-				}
-					
-				if(!col.isEmpty() || !s.isEmpty() || !s2.isEmpty()) 
-					valido = false;
-				
+			if (!((q.size() - 1 ) % 3 == 0))
+				valida = false;
+			while(valida && q.size() > (((tamanioOriginal/3)*2)+1)) {
+				Character aux = q.dequeue();
+				pilaAux1.push(aux);
+				pilaAux2.push(aux);
 			}
-		catch(EmptyQueueException | EmptyStackException e) {
-			System.out.println("Error en el manejo de la estructura de datos.");
+			if (! (q.dequeue() == 'x') )  //Comprueba caracter x
+				valida = false;
+			else {
+				while(valida && q.size()>tamanioOriginal/3) { //reconoce parte inversa
+					if((q.dequeue() != pilaAux1.pop())) 
+						valida = false;
+				}
+				while(valida && !pilaAux2.isEmpty()) { //reconoce parte al derecho
+					if((q.dequeue() != pilaAux2.pop())) 
+						valida = false;
+				}
+				if (!q.isEmpty())
+					valida = false;
+			}
+			
 		}
-		
-		return valido;
+		catch(EmptyQueueException e) {System.out.println("La se encuentra vacia");}
+		catch(EmptyStackException e) {System.out.println(e.getMessage());}
+		return valida;
 	}
+
 	
 	/**
 	 * Consulta las ultimas n transacciones realizadas 
@@ -215,21 +205,20 @@ public class CuentaBancaria {
 	 * Realiza un debito de monto (monto) hacia el beneficiario
 	 * @param monto de la cuenta bancaria
 	 * @param beneficiario a recibir el monto
-	 * @throws SaldoInsuficienteException si el monto a debitar es insuficiente
+	 * @return true si la transaccion fue realizada y false en caso contrario.
 	 */
-	public void debito(float monto,CuentaBancaria beneficiario) throws SaldoInsuficienteException {
-
+	public boolean debito(float monto,CuentaBancaria beneficiario) {
+		boolean toReturn;
 
 		if (saldo < monto) 
-			throw new SaldoInsuficienteException("No hay saldo suficiente para realizar la operación.");
+			toReturn = false;
 		else {
 			saldo = saldo - monto;
-
 			Transaccion nueva = new Transaccion('d',monto,this,beneficiario);
-			
 			historial.addFirst(nueva);
+			toReturn = true;
 		}
-
+		return toReturn;
 	}
 	
 	/**

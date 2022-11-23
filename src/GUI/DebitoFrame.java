@@ -11,7 +11,6 @@ import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
-import Exceptions.TransaccionInvalidaException;
 import Programa.CuentaBancaria;
 import Programa.Logica;
 import java.awt.event.ActionListener;
@@ -85,12 +84,12 @@ public class DebitoFrame {
 					int dni = Integer.parseInt(textFieldDNI.getText());
 					int confirmar = JOptionPane.showConfirmDialog(btnConfirmar, "¿Desea confirmar la transacción?", "Confirmar transaccion", 2);
 					if (confirmar == 0) {
-					logica.debito(monto, dni);
+					if(!logica.debito(monto, dni)) {
+						JOptionPane.showMessageDialog(btnConfirmar, "Transaccion Invalida", "Error en la transaccion", 0);
+					}
 					frmBancoEdd.dispose();
 					}
 					
-				} catch (TransaccionInvalidaException e1) {
-					JOptionPane.showMessageDialog(btnConfirmar, e1.getMessage(), "Error en la transaccion", 0);
 				} catch(NumberFormatException e1){
 					JOptionPane.showMessageDialog(
 							null, "Por favor, solo ingrese numeros", "Datos incorrectos", 0);

@@ -6,10 +6,6 @@ import java.util.Iterator;
 import Auxiliares.Entry;
 import Exceptions.EmptyPriorityQueueException;
 import Exceptions.InvalidKeyException;
-import Exceptions.LogueoInvalidoException;
-import Exceptions.RegistroInvalidoException;
-import Exceptions.SaldoInsuficienteException;
-import Exceptions.TransaccionInvalidaException;
 import GUI.LogInFrame;
 import TDAColaCP.PriorityQueue;
 import TDALista.ListaDoblementeEnlazada;
@@ -38,13 +34,9 @@ public class Logica {
 	 * @param apellido del priopietario
 	 * @param dni del propietario
 	 * @param saldo del propietario
-	 * @throws RegistroInvalidoException si alguno de los campos esta vacio
 	 */
-	public void signIn(String nombre, String apellido, int dni, float saldo) throws RegistroInvalidoException {
-		if(!nombre.equals("") && !apellido.equals(""))
+	public void signIn(String nombre, String apellido, int dni, float saldo){
 		cuentas.addLast(new CuentaBancaria(nombre, apellido, dni, saldo));
-		else
-			throw new RegistroInvalidoException ("Campos vacios");
 	}
 	
 	/**
@@ -53,14 +45,16 @@ public class Logica {
 	 * @param nombre de la cuenta
 	 * @param apellido de la cuenta
 	 * @param dni de la cuenta
-	 * @throws LogueoInvalidoException si algun dato es incorrecto
+	 * @return boolean, true si logra ingresar a la cuenta, false en caso contrario.
 	 */
-	public void logIn(String clave, String nombre, String apellido, int dni) throws LogueoInvalidoException{
+	public boolean logIn(String clave, String nombre, String apellido, int dni){
 		CuentaBancaria cuenta = buscarCuenta(dni);
+		boolean toReturn = false;
 		if ((cuenta!=null) && (nombre.equals(cuenta.getNombre())) && (apellido.equals(cuenta.getApellido())) && cuenta.validarCadena(clave)) {
 			setSesionActual(cuenta);
+			toReturn = true;
 		}
-		else {throw new LogueoInvalidoException("Datos incorrectos");}
+		return toReturn;
 	}
 	
 
@@ -69,38 +63,48 @@ public class Logica {
 	 * Permite el debito de dinero a una valida
 	 * @param monto a debitar
 	 * @param dni de la cuenta receptora del dinero
-	 * @throws TransaccionInvalidaException si el beneficiario es invalido
+	 * @return boolean, true si la transaccion fue realizada, false en lo contrario.
 	 */
-	public void debito(float monto, int dni) throws TransaccionInvalidaException{
-		try{
-			CuentaBancaria beneficiario = buscarCuenta(dni);
-			if (beneficiario != null) {
-				sesionActual.debito(monto, beneficiario);
-				beneficiario.credito(monto,getSesionActual()); //Las transferencias se ven reflejadas desde el lado del receptor como un credito
+	public boolean debito(float monto, int dni){
+		boolean toReturn = true;
+				
+		CuentaBancaria beneficiario = buscarCuenta(dni);
+		if (beneficiario != null) {
+			if (!sesionActual.debito(monto, beneficiario)) {
+				toReturn = false;
 			}
 			else {
-				throw new TransaccionInvalidaException("Beneficiario invalido");
+				beneficiario.credito(monto,getSesionActual()); //Las transferencias se ven reflejadas desde el lado del receptor como un credito
 			}
-		}catch(SaldoInsuficienteException e) {
-			throw new TransaccionInvalidaException(e.getMessage());
-			}
+		}
+		else {
+			toReturn = false;
+		}
+		return toReturn;
+		
 	}
 	
 	/**
 	 * Permite acreditar dinero a una cuenta valida 
 	 * @param monto a acreditar
 	 * @param dni del emisor
-	 * @throws TransaccionInvalidaException si el emisor es invalido
+	 * @return boolean, true si la transaccion fue realizada, false en lo contrario.
 	 */
-	public void credito(float monto, int dni) throws TransaccionInvalidaException{ //solo recibe dinero
-
+	public boolean credito(float monto, int dni) { //solo recibe dinero
+		boolean toReturn = true;
 		CuentaBancaria emisor = buscarCuenta(dni);
 		if (emisor != null) {
-			sesionActual.credito(monto,emisor);
+			if (!emisor.debito(monto, sesionActual)) {
+				toReturn = false;
+			}
+			else {
+				sesionActual.credito(monto,emisor);
+			}
 		}
 		else {
-			throw new TransaccionInvalidaException("Emisor invalido");
+			toReturn = false;
 		}
+		return toReturn;
 	}
 
 	/**
@@ -175,5 +179,20 @@ public class Logica {
 	public static void setSesionActual(CuentaBancaria sesionActual) {
 		Logica.sesionActual = sesionActual;
 	}
+	
+	
+	
+	 public static boolean isNumeric(String str)
+	  {
+	      try
+	      {
+	          float d = Float.parseFloat(str);
+	      }
+	      catch(NumberFormatException nfe)
+	      {  
+	          return false;
+	      }
+	      return true;
+	  }
 }
-//Se asume que el apellido no contiene el caracter x
+
